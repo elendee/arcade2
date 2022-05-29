@@ -1,0 +1,42 @@
+
+#details{
+    padding: 20px;
+}
+
+input[type=color]{
+	padding: 0px !important;
+	display: inline-block;
+    vertical-align: middle;
+    border: 0px;
+}
+
+form{
+	margin: 10px 0;
+/* 	background: rgba(0, 0, 0, .1); */
+	padding: 5px;
+}
+
+form label{
+	font-weight: bold;
+	display: block;
+}
+
+form input[type=text],
+form input[type=email],
+form input[type=password]{
+	width: 300px;
+	font-weight: bold;
+	color: #4b4949;
+}
+
+form input::placeholder{
+	color: #9f9f9f;
+}
+
+form input:disabled{
+	border: 0px;
+}
+
+input.input{
+	background: rgba(255, 255, 255, .5);
+}

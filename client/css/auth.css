@@ -1,0 +1,34 @@
+body{   
+    text-align: center;
+}
+
+.auth-form{
+    display: inline-block;
+	max-width: 250px;
+}
+
+.auth-form input{
+	margin: 20px 0;
+}
+
+#oauth-providers{
+	margin-top: 20px;
+	border-top: 1px solid;
+}
+
+#oauth-providers .button{
+	margin-top: 20px;
+}
+
+#github{
+	background: rgb(80, 90, 150);
+}
+#github:hover{
+	background: rgb(60, 70, 130);
+}
+#google{
+	background: rgb(180, 50, 50);
+}
+#google:hover{
+	background: rgb(140, 30, 30);
+}

@@ -1,0 +1,43 @@
+/*asdf*/
+
+#contacts{
+    margin-top: 80px;
+    padding: 20px;
+}
+
+#contactform{
+    margin-top: 20px;
+    padding: 10px;
+    background: lightgreen;
+/*     display: none; */
+}
+
+#contacts label{
+    display: block;
+    margin-top: 10px;
+/*     border: 2px solid; */
+}
+
+#contactform input[type=submit]{
+    margin-top: 20px;
+}
+
+#contactform.editing{
+    background: orange;
+}
+
+.edit-button{
+    font-size: initial;
+    float: right;
+}
+
+.delete-button.close{
+    right: 10px;
+    position: relative;
+    float: right;
+}
+
+#search-bar{
+    display: block;
+    margin: 20px 0;
+}
