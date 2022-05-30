@@ -1,7 +1,7 @@
-import ui from '../ui.js?v=28'
-import hal from '../hal.js?v=28'
-import { Modal } from '../Modal.js?v=28'// system/ui
-import fetch_wrap from '../fetch_wrap.js?v=28'
+import ui from '../ui.js?v=30'
+import hal from '../hal.js?v=30'
+import { Modal } from '../Modal.js?v=30'// system/ui
+import fetch_wrap from '../fetch_wrap.js?v=30'
 
 
 

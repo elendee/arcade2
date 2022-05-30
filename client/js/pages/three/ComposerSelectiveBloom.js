@@ -11,21 +11,21 @@ import {
 	MeshBasicMaterial,
 } from '/three-patch/build/three.module.js'
 
-import GLOBAL from '../../GLOBAL.js?v=28'
+import GLOBAL from '../../GLOBAL.js?v=30'
 
-import SCENE from './SCENE.js?v=28'
-import CAMERA from './CAMERA.js?v=28'
-import RENDERER from './RENDERER.js?v=28'
-import SETTINGS from '../SETTINGS.js?v=28'
+import SCENE from './SCENE.js?v=30'
+import CAMERA from './CAMERA.js?v=30'
+import RENDERER from './RENDERER.js?v=30'
+import SETTINGS from '../SETTINGS.js?v=30'
 
-import BROKER from '../../EventBroker.js?v=28'
+import BROKER from '../../EventBroker.js?v=30'
 
 import {
 	EffectComposer,
-} from '/three-patch/examples/jsm/postprocessing/EffectComposer.js?v=28'
-import { ShaderPass } from '/three-patch/examples/jsm/postprocessing/ShaderPass.js?v=28'
-import { RenderPass } from '/three-patch/examples/jsm/postprocessing/RenderPass.js?v=28'
-import { UnrealBloomPass } from '/three-patch/examples/jsm/postprocessing/UnrealBloomPass.js?v=28'
+} from '/three-patch/examples/jsm/postprocessing/EffectComposer.js?v=30'
+import { ShaderPass } from '/three-patch/examples/jsm/postprocessing/ShaderPass.js?v=30'
+import { RenderPass } from '/three-patch/examples/jsm/postprocessing/RenderPass.js?v=30'
+import { UnrealBloomPass } from '/three-patch/examples/jsm/postprocessing/UnrealBloomPass.js?v=30'
 
 
 

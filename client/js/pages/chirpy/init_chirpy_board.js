@@ -1,18 +1,18 @@
-import BROKER from '../../EventBroker.js?v=28'
-import WS from '../../WS.js?v=28'
-import SCENE from '../three/SCENE.js?v=28'
-import RENDERER from '../three/RENDERER.js?v=28'
+import BROKER from '../../EventBroker.js?v=30'
+import WS from '../../WS.js?v=30'
+import SCENE from '../three/SCENE.js?v=30'
+import RENDERER from '../three/RENDERER.js?v=30'
 import {
 	init_animate,
 	animate,
-} from '../three/animate.js?v=28'
-import CAMERA from '../three/CAMERA.js?v=28'
-import * as LIGHT from '../three/LIGHT.js?v=28'
+} from '../three/animate.js?v=30'
+import CAMERA from '../three/CAMERA.js?v=30'
+import * as LIGHT from '../three/LIGHT.js?v=30'
 import {
 	Vector3,
 } from '/three-patch/build/three.module.js'
 
-import BOARD from './BOARD.js?v=28'
+import BOARD from './BOARD.js?v=30'
 
 
 
@@ -29,7 +29,7 @@ const init_user = event => {
 	SCENE.add( CAMERA )
 	SCENE.add( LIGHT.hemispherical )
 
-	CAMERA.position.set(50, 50, 50)
+	CAMERA.position.set(50, 100, 50)
 	CAMERA.lookAt( new Vector3(0,0,0) )
 
 	init_animate()

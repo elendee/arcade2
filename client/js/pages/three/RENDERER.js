@@ -1,13 +1,13 @@
-import GLOBAL from '../../GLOBAL.js?v=28'
-import env from '../../env.js?v=28'
+import GLOBAL from '../../GLOBAL.js?v=30'
+import env from '../../env.js?v=30'
 import {
 	WebGLRenderer,
 	sRGBEncoding,
 	// PCFSoftShadowMap,
 } from '/three-patch/build/three.module.js'
-import CAMERA from './CAMERA.js?v=28'
-import SETTINGS from '../SETTINGS.js?v=28'
-// import GLOBAL from '../../GLOBAL.js?v=28'
+import CAMERA from './CAMERA.js?v=30'
+import SETTINGS from '../SETTINGS.js?v=30'
+// import GLOBAL from '../../GLOBAL.js?v=30'
 
 
 const set_renderer = window.set_renderer = ( r, init ) => {

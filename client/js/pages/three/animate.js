@@ -1,10 +1,11 @@
-import BROKER from '../../EventBroker.js?v=28'
-import CAMERA from './CAMERA.js?v=28'
-import RENDERER from './RENDERER.js?v=28'
-import SCENE from './SCENE.js?v=28'
+import env from '../../env.js?v=30'
+import BROKER from '../../EventBroker.js?v=30'
+import CAMERA from './CAMERA.js?v=30'
+import RENDERER from './RENDERER.js?v=30'
+import SCENE from './SCENE.js?v=30'
 import {
 	composeAnimate,
-} from './ComposerSelectiveBloom.js?v=28'
+} from './ComposerSelectiveBloom.js?v=30'
 import {
 	OrbitControls,
 } from '/three-patch/examples/jsm/controls/OrbitControls.js'
@@ -117,15 +118,26 @@ const init_animate = () => {
 	*/
 
 	controls = new OrbitControls( CAMERA, RENDERER.domElement )
+
+	if( env.EXPOSE ) window.CONTROLS = controls
+
 	set_animate( settings )
 }
 
 
 
+const set_target = event => {
+	const { pos } = event
+	console.log( controls.target, pos )
+	controls.target.x = pos.x
+	controls.target.y = pos.y
+	controls.target.z = pos.z
+}
+
 
 
 BROKER.subscribe('SETTINGS_UPDATE', set_animate )
-
+BROKER.subscribe('CONTROLS_TARGET', set_target )
 
 
 

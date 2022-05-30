@@ -1,4 +1,4 @@
-import env from '../../env.js?v=28'
+import env from '../../env.js?v=30'
 import {
 	Group,
 	Vector3,
@@ -7,19 +7,28 @@ import {
 	Mesh,
 	DoubleSide,
 } from '/three-patch/build/three.module.js'
-import SCENE from '../three/SCENE.js?v=28'
-import BROKER from '../../EventBroker.js?v=28'
+import SCENE from '../three/SCENE.js?v=30'
+import CAMERA from '../three/CAMERA.js?v=30'
+import BROKER from '../../EventBroker.js?v=30'
 
 
 
 
 
+
+
+
+
+// declarations
+
+const SCALAR = 10
 
 const BOARD = {
 	GROUP: new Group(),
 	tiles: {},
 	hydrate: data => {
 		BOARD.type = data.type
+		BOARD.size = data.size 
 	}
 }
 if( env.EXPOSE ) window.BOARD = BOARD
@@ -33,13 +42,7 @@ const tile_mats = {
 for( const type in tile_mats ){ tile_mats[ type ].side = DoubleSide }
 
 
-
-
-
-
-
-
-
+// classes
 
 class Tile {
 	constructor( init ){
@@ -52,9 +55,11 @@ class Tile {
 		this.uuid = init.uuid
 		this.x = init.x
 		this.z = init.z
+		this.number = init.number // random server data
 	}
 	render(){
 		this.MODEL.scale.multiplyScalar( this.scale )
+		this.MODEL.position.y = ( this.number * SCALAR ) - ( SCALAR / 2 )
 	}
 }
 
@@ -67,7 +72,6 @@ class Tile {
 
 
 
-const SCALAR = 10
 
 // tile CRUD
 
@@ -94,6 +98,26 @@ const update_tile = ( existing, newtile ) => {
 
 
 
+
+
+// ------------
+// library
+// ------------
+
+const update_camera = window.update_camera = () => {
+	const half = ( BOARD.size * SCALAR ) / 2
+	const origin = new Vector3( half, 0, half )
+	// CAMERA.position.y || 50
+
+	// CAMERA.target.copy( origin )
+
+	BROKER.publish('CONTROLS_TARGET', {
+		pos: origin,
+	})
+
+
+
+}
 
 
 
@@ -141,6 +165,8 @@ const update_board = event => {
 	}
 
 	if( !BOARD.GROUP.parent ) SCENE.add( BOARD.GROUP )
+
+	update_camera()
 
 }
 
