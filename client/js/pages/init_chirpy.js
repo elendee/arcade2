@@ -3,6 +3,7 @@ import BROKER from '../EventBroker.js?v=25'
 import {
 	pretty_pre,
 } from '../lib.js?v=25'
+import hal from '../hal.js?v=25'
 import User from '../classes/User.js?v=25'
 import USER from '../USER.js?v=25'
 import USERS from '../registers/USERS.js?v=25'
