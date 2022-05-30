@@ -8,6 +8,7 @@ import {
 	DoubleSide,
 } from '/three-patch/build/three.module.js'
 import SCENE from '../three/SCENE.js?v=28'
+import BROKER from '../../EventBroker.js?v=28'
 
 
 
