@@ -18,7 +18,7 @@ const init = () => {
 
 	ui.spinner.show()
 
-	console.log('initting websocket')
+	console.log('initting websocket', env.WS_URL )
 
 	SOCKET = new WebSocket( env.WS_URL )
 
