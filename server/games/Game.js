@@ -34,7 +34,8 @@ class Game {
 		if( !user ) return lib.return_fail_socket( socket, 'no user to add to game: ' + this.name, 5000, 'no user given for join')
 
 		if( this._USERS[ user.uuid ]){
-			return lib.return_fail_socket(  socket, 'user is already in game', 5000, 'user probably reloaded page.. apply a penalty here' )
+			return log('flag', 'user is already in game')
+			// lib.return_fail_socket(  socket, 'user is already in game', 5000, 'user probably reloaded page.. apply a penalty here' )
 		}
 
 		// touch from global registry
