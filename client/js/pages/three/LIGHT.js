@@ -1,14 +1,14 @@
 
-// import GLOBAL from '../../GLOBAL.js?v=27'
+// import GLOBAL from '../../GLOBAL.js?v=28'
 
 import { 
 	Lensflare, 
 	LensflareElement 
-} from '/three-patch/examples/jsm/objects/Lensflare.js?v=27'
+} from '/three-patch/examples/jsm/objects/Lensflare.js?v=28'
 
-import env from '../../env.js?v=27'
+import env from '../../env.js?v=28'
 
-// import { removeBloom } from './ComposerSelectiveBloom.js?v=27'
+// import { removeBloom } from './ComposerSelectiveBloom.js?v=28'
 
 import { 
 	Mesh,

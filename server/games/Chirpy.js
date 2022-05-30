@@ -31,12 +31,27 @@ const add_publish = obj => {
 
 
 
+
+
+
+
+
+
 class Tile {
 	constructor( init ){
 		init = init || {}
+		this.uuid = init.uuid || arc_uuid()
 		this.number = init.number
+		this.x = init.x
+		this.z = init.z
 	}
 }
+
+
+
+
+
+
 
 
 
@@ -53,21 +68,31 @@ class Board {
 		this._TILES = []
 		this._USERS = {}
 
+		this.init_tiles()
+
 		add_publish( this )
 	}
 
 	init_tiles(){
+		/* 
+			one time
+		*/
 		for( let x = 0; x < this.size; x++ ){
 			this._TILES[x] = []
 			for( let z = 0; z < this.size; z++ ){
 				this._TILES[x][z] = new Tile({
 					number: Math.random(),
+					x: x,
+					z: z,
 				})
 			}
 		}
 	}
 
 	add_user( user ){
+		/*
+			main add user
+		*/
 		this._USERS[ user.uuid ] = user
 		this._manager.broadcast({
 			type: 'chr_add_user',
@@ -76,6 +101,9 @@ class Board {
 	}
 
 	get_listing(){
+		/*
+			for lobby page
+		*/
 		const listing  = {
 			name: this.name,
 			uuid: this.uuid,
@@ -92,11 +120,16 @@ class Board {
 		return listing
 	}
 
-	pong( socket ){
+	pong_board_state( socket ){
+		/*
+			pong board 
+		*/
 		const self = {
 			uuid: this.uuid,
 			founder_uuid: this.founder_uuid,
-			size: this.size
+			size: this.size,
+			tiles: this._TILES.map( tile => { return tile } ),
+			type: this.type,
 		}
 		socket.send(JSON.stringify({
 			type: 'chr_pong_board',
@@ -104,8 +137,20 @@ class Board {
 		}))
 	}
 
+	pong_player_state( socket ){
+
+	}
+
 
 }
+
+
+
+
+
+
+
+
 
 
 

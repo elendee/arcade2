@@ -1,10 +1,10 @@
-import BROKER from '../../EventBroker.js?v=27'
-import CAMERA from './CAMERA.js?v=27'
-import RENDERER from './RENDERER.js?v=27'
-import SCENE from './SCENE.js?v=27'
+import BROKER from '../../EventBroker.js?v=28'
+import CAMERA from './CAMERA.js?v=28'
+import RENDERER from './RENDERER.js?v=28'
+import SCENE from './SCENE.js?v=28'
 import {
 	composeAnimate,
-} from './ComposerSelectiveBloom.js?v=27'
+} from './ComposerSelectiveBloom.js?v=28'
 import {
 	OrbitControls,
 } from '/three-patch/examples/jsm/controls/OrbitControls.js'

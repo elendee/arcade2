@@ -1,9 +1,9 @@
 import {
 	Raycaster,
 } from '/three-patch/build/three.module.js'
-import CAMERA from './CAMERA.js?v=27'
+import CAMERA from './CAMERA.js?v=28'
 
-import env from '../../env.js?v=27'
+import env from '../../env.js?v=28'
 
 const raycaster = new Raycaster(); 
 raycaster.camera = CAMERA

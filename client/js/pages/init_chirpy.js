@@ -1,19 +1,19 @@
-import env from '../env.js?v=27'
-import WS from '../WS.js?v=27'
-import BROKER from '../EventBroker.js?v=27'
+import env from '../env.js?v=28'
+import WS from '../WS.js?v=28'
+import BROKER from '../EventBroker.js?v=28'
 import {
 	pretty_pre,
 	build_input,
 	create,
-} from '../lib.js?v=27'
-import ui from '../ui.js?v=27'
-import { Modal } from '../Modal.js?v=27'
-import hal from '../hal.js?v=27'
-import User from '../classes/User.js?v=27'
-import USER from '../USER.js?v=27'
-import USERS from '../registers/USERS.js?v=27'
-import GLOBAL from '../GLOBAL.js?v=27'
-// import chirpy_board from './chirpy_board.js?v=27'
+} from '../lib.js?v=28'
+import ui from '../ui.js?v=28'
+import { Modal } from '../Modal.js?v=28'
+import hal from '../hal.js?v=28'
+import User from '../classes/User.js?v=28'
+import USER from '../USER.js?v=28'
+import USERS from '../registers/USERS.js?v=28'
+import GLOBAL from '../GLOBAL.js?v=28'
+// import chirpy_board from './chirpy_board.js?v=28'
 
 
 	

@@ -1,4 +1,4 @@
-import BROKER from '../EventBroker.js?v=27'
+import BROKER from '../EventBroker.js?v=28'
 
 
 class User {

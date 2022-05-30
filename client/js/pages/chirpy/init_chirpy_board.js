@@ -1,18 +1,19 @@
-import BROKER from '../../EventBroker.js?v=27'
-import WS from '../../WS.js?v=27'
-import BOARD from './BOARD.js?v=27'
-import SCENE from '../three/SCENE.js?v=27'
-import RENDERER from '../three/RENDERER.js?v=27'
+import BROKER from '../../EventBroker.js?v=28'
+import WS from '../../WS.js?v=28'
+import SCENE from '../three/SCENE.js?v=28'
+import RENDERER from '../three/RENDERER.js?v=28'
 import {
 	init_animate,
 	animate,
-} from '../three/animate.js?v=27'
-import CAMERA from '../three/CAMERA.js?v=27'
-import * as LIGHT from '../three/LIGHT.js?v=27'
-
+} from '../three/animate.js?v=28'
+import CAMERA from '../three/CAMERA.js?v=28'
+import * as LIGHT from '../three/LIGHT.js?v=28'
 import {
 	Vector3,
 } from '/three-patch/build/three.module.js'
+
+import BOARD from './BOARD.js?v=28'
+
 
 
 // const chirpy_board = board => {
@@ -24,7 +25,7 @@ const init_user = event => {
 	// const { socket, packet } = event
 	console.log( event )
 
-	SCENE.add( BOARD.GROUND )
+	SCENE.add( BOARD.GROUP )
 	SCENE.add( CAMERA )
 	SCENE.add( LIGHT.hemispherical )
 

@@ -1,5 +1,5 @@
 
-// const cache = '?v=27'
+// const cache = '?v=28'
 const log = require('../server/log.js')
 const lib = require('../server/lib.js')
 const env = require('../server/.env.js')
@@ -43,16 +43,16 @@ const global_data = () => { return `<div id="global-data">${ JSON.stringify( PUB
 const scripts = {
 
 	// auth
-	index: `<script type='module' defer='defer' src='/js/auth/init_index.js?v=27'></script>`,
-	auth: `<script type='module' defer='defer' src='/js/auth/init_auth.js?v=27'></script>`,
-	account: `<script type='module' defer='defer' src='/js/auth/init_account.js?v=27'></script>`,
-	contacts: `<script type='module' defer='defer' src='/js/auth/init_contacts.js?v=27'></script>`,
-	admin: `<script type='module' defer='defer' src='/js/auth/init_admin.js?v=27'></script>`,
-	chirpy: `<script type='module' defer='defer' src='/js/pages/init_chirpy.js?v=27'></script>`,
-	chirpy_board: `<script type='module' defer='defer' src='/js/pages/chirpy/init_chirpy_board.js?v=27'></script>`,
-	await_confirm: `<script type='module' defer='defer' src='/js/auth/init_await-confirm.js?v=27'></script>`,
-	send_confirm: `<script type='module' defer='defer' src='/js/auth/init_send-confirm.js?v=27'></script>`,
-	redirect: `<script type='module' defer='defer' src='/js/auth/init_redirect.js?v=27'></script>`,
+	index: `<script type='module' defer='defer' src='/js/auth/init_index.js?v=28'></script>`,
+	auth: `<script type='module' defer='defer' src='/js/auth/init_auth.js?v=28'></script>`,
+	account: `<script type='module' defer='defer' src='/js/auth/init_account.js?v=28'></script>`,
+	contacts: `<script type='module' defer='defer' src='/js/auth/init_contacts.js?v=28'></script>`,
+	admin: `<script type='module' defer='defer' src='/js/auth/init_admin.js?v=28'></script>`,
+	chirpy: `<script type='module' defer='defer' src='/js/pages/init_chirpy.js?v=28'></script>`,
+	chirpy_board: `<script type='module' defer='defer' src='/js/pages/chirpy/init_chirpy_board.js?v=28'></script>`,
+	await_confirm: `<script type='module' defer='defer' src='/js/auth/init_await-confirm.js?v=28'></script>`,
+	send_confirm: `<script type='module' defer='defer' src='/js/auth/init_send-confirm.js?v=28'></script>`,
+	redirect: `<script type='module' defer='defer' src='/js/auth/init_redirect.js?v=28'></script>`,
 
 	// misc
 	fabric: `<script src='/inc/fabric.min.js' defer='defer'></script>`,
@@ -65,19 +65,19 @@ const scripts = {
 const styles = {
 
 	// auth
-	index: `<link rel='stylesheet' href='/css/splash.css?v=27'>`,
-	base: `<link rel='stylesheet' href='/css/base.css?v=27'>`,
-	auth: `<link rel='stylesheet' href='/css/auth.css?v=27'>`,
-	account: `<link rel='stylesheet' href='/css/account.css?v=27'>`,
-	chirpy: `<link rel='stylesheet' href='/css/chirpy.css?v=27'>`,
-	chirpy_board: `<link rel='stylesheet' href='/css/chirpy_board.css?v=27'>`,
-	spreadsheets: `<link rel='stylesheet' href='/css/spreadsheets.css?v=27'>`,
-	contacts: `<link rel='stylesheet' href='/css/contacts.css?v=27'>`,
-	admin: `<link rel='stylesheet' href='/css/admin.css?v=27'>`,
-	modal: `<link rel='stylesheet' href='/css/modal.css?v=27'>`,
+	index: `<link rel='stylesheet' href='/css/splash.css?v=28'>`,
+	base: `<link rel='stylesheet' href='/css/base.css?v=28'>`,
+	auth: `<link rel='stylesheet' href='/css/auth.css?v=28'>`,
+	account: `<link rel='stylesheet' href='/css/account.css?v=28'>`,
+	chirpy: `<link rel='stylesheet' href='/css/chirpy.css?v=28'>`,
+	chirpy_board: `<link rel='stylesheet' href='/css/chirpy_board.css?v=28'>`,
+	spreadsheets: `<link rel='stylesheet' href='/css/spreadsheets.css?v=28'>`,
+	contacts: `<link rel='stylesheet' href='/css/contacts.css?v=28'>`,
+	admin: `<link rel='stylesheet' href='/css/admin.css?v=28'>`,
+	modal: `<link rel='stylesheet' href='/css/modal.css?v=28'>`,
 
 	// pages
-	page: `<link rel='stylesheet' href='/css/page.css?v=27'>`,
+	page: `<link rel='stylesheet' href='/css/page.css?v=28'>`,
 
 }
 
