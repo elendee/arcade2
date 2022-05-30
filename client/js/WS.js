@@ -18,6 +18,8 @@ const init = () => {
 
 	ui.spinner.show()
 
+	console.log('initting websocket')
+
 	SOCKET = new WebSocket( env.WS_URL )
 
 	SOCKET.onopen = function( event ){
