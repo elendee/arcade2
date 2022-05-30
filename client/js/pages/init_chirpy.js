@@ -54,7 +54,7 @@ const pop_option = type => {
 
 		case 'create':
 			select = build_input('select', 'board type', 'type', null, {
-				options: GLOBAL.BOARD_TYPES,
+				options: GLOBAL.CHR_BOARD_TYPES,
 			})
 			select.classList.add('chr-selection')
 			modal.content.appendChild( select )

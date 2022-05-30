@@ -3,6 +3,30 @@ const PUBLIC = require('../data/PUBLIC.js')
 const {
 	arc_uuid,
 } = require('../lib.js')
+const SOCKETS = require('../registers/SOCKETS.js')
+
+
+
+
+
+const add_publish = obj => {
+
+	obj.publish = ( ...excepted ) => {
+		excepted = excepted || []
+		let r = {}
+		for( const key of Object.keys( this )){
+			if( ( typeof( key ) === 'string' && key[0] !== '_' ) || excepted.includes( key ) ){
+				if( this[ key ] && typeof this[ key ].publish === 'function' ){
+					r[ key ] = this[ key ].publish()
+				}else{
+					r[ key ] = this[ key ]
+				}
+			}
+		}
+		return r
+	}
+
+}
 
 
 
@@ -23,7 +47,13 @@ class Board {
 		this.type = init.type
 		this.size = init.size
 		this.uuid = init.uuid || arc_uuid()
+		this.founder_uuid = init.founder_uuid
+		this._manager = init._manager // parent Chirpy
+
 		this._TILES = []
+		this._USERS = {}
+
+		add_publish( this )
 	}
 
 	init_tiles(){
@@ -35,6 +65,14 @@ class Board {
 				})
 			}
 		}
+	}
+
+	add_user( user ){
+		this._USERS[ user.uuid ] = user
+		this._manager.broadcast({
+			type: 'chr_add_user',
+			user: user.publish(),
+		})
 	}
 
 	get_listing(){
@@ -53,6 +91,19 @@ class Board {
 		}
 		return listing
 	}
+
+	pong( socket ){
+		const self = {
+			uuid: this.uuid,
+			founder_uuid: this.founder_uuid,
+			size: this.size
+		}
+		socket.send(JSON.stringify({
+			type: 'chr_pong_board',
+			board: self,
+		}))
+	}
+
 
 }
 
@@ -73,22 +124,37 @@ class Chirpy extends Game {
 
 	extend_init(){
 		this._is_valid = true // ( deafult bool for all Game extends )
-
 	}
 
-	async init_board( choice ){
-		const keys = PUBLIC.BOARD_TYPES.map( ele => { return ele.name })
+	async init_board( choice, user ){
+		const keys = PUBLIC.CHR_BOARD_TYPES.map( ele => { return ele.name })
 		if( !keys.includes( choice )) throw new Error('invalid board choice', choice )
 
 		const board = new Board({
 			type: choice,
 			size: 10,
+			founder_uuid: user.uuid,
+			_manager: this,
 		})
 
 		this._BOARDS[ board.uuid ] = board
 
+		board.add_user( user )
+
 		return board
 
+	}
+
+	get_user_board( user_uuid ){
+		if( !user_uuid ) return false
+		let b
+		for( const uuid in this._BOARDS ){
+			b = this._BOARDS[ uuid ]
+			for( const uid in b._USERS ){
+				if( uid === user_uuid ) return b
+			}
+		}
+		return false
 	}
 
 	get_start( user ){
@@ -99,6 +165,18 @@ class Chirpy extends Game {
 			board_uuids: board_uuids,
 			user_uuids: user_uuids,
 		}
+	}
+
+	remove_user( uuid ){
+		if( SOCKETS[ uuid ]){
+			delete SOCKETS[ uuid ]
+		}
+		delete this._USERS[ uuid ]
+		this.broadcast({
+			type: 'remove_user',
+			game: this.name,
+			user_uuid: uuid,
+		})
 	}
 
 }

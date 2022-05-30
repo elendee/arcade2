@@ -35,10 +35,17 @@ const init_user = event => {
 
 	animate()
 
+	BROKER.publish('SOCKET_SEND', {
+		type: 'chr_ping_board'
+	})
+
 }
 
 
-
+const remove_user = event => {
+	const { game, user_uuid } = event
+	console.log('unhandled remove', 'event ')
+}
 
 
 
@@ -58,5 +65,6 @@ const socket = window.SOCKET = WS.init()
 
 
 BROKER.subscribe('ARCADE_INITIALIZED_USER', init_user )
+BROKER.subscribe('ARCADE_REMOVE_USER', remove_user )
 
 // export default {}

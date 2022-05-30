@@ -37,6 +37,9 @@ const GAMES = {}
 // ---------------------------------------------
 
 const touch_game = async( name ) => {
+	/*
+		get or instantiate game
+	*/
 
 	if( GAMES[ name ] ) return GAMES[ name ]
 
@@ -50,6 +53,17 @@ const touch_game = async( name ) => {
 
 	return game
 
+}
+
+
+const get_user_game  = user => {
+	if( !user ) return
+	for( const name in GAMES ){
+		for( const uuid in GAMES[ name ]._USERS ){
+			if( uuid === user.uuid ) return GAMES[ name ]
+		}
+	}
+	return false
 }
 
 
@@ -143,25 +157,75 @@ const chr_init_board = async( event ) => {
 				break;
 
 			case 'create':
-				board = await GAMES.chirpy.init_board( choice )
+				board = await GAMES.chirpy.init_board( choice, user )
 				break;
 
 			default:
 				return lib.return_fail_socket(socket, 'invalid type', 5000, false )
 		}
 
-		GAMES.chirpy.broadcast({
+		const p = {
 			type: 'chr_init_board',
-			subtype: subtype,
-			user_uuid: user.uuid,
+			// subtype: subtype,
+			// user_uuid: user.uuid,
 			board: board.get_listing(),
-		})
+		}
+
+		socket.send( JSON.stringify( p ))
+
+		// GAMES.chirpy.broadcast()
 
 	}catch( err ){
 		return lib.return_fail_socket(socket, 'error initializing game', 5000, err )
 	}
 
 }
+
+
+const chr_pong_board = async( event ) => {
+
+	const { socket, packet } = event 
+
+	const user = socket.request?.session?.USER
+
+	// Chirpy manager
+	if( !GAMES.chirpy ){
+		if( !env.PRODUCTION ){
+			GAMES.chirpy = await touch_game('chirpy')
+		}else{
+			return lib.return_fail_socket( socket, 'no boards online', 15000 )
+		}
+	}
+
+	// Chirpy board
+	let board = GAMES.chirpy.get_user_board( user.uuid )
+
+	if( !env.PRODUCTION ){
+		log('flag', 'spoofing board for local')
+		board = await GAMES.chirpy.init_board('desert', user )
+	}
+
+	if( !board ) return lib.return_fail_socket( socket, 'board not found', 10 * 1000, false ) 
+
+	board.pong( socket )
+
+}
+
+
+const disconnect_user = event => {
+	const { socket} = event
+	const user = socket?.request?.session?.USER
+	if( !user ) return lib.return_fail( 'no user for socket disconnect_user', false )
+
+	delete SOCKETS[ user.uuid ]
+	delete USERS[ user.uuid ]
+
+	for( const name in GAMES ){
+		GAMES[ name ].remove_user( user.uuid )
+	}
+}
+
+
 
 
 
@@ -176,6 +240,9 @@ BROKER.subscribe('ARCADE_INIT_USER', init_user )
 BROKER.subscribe('ARCADE_JOIN_GAME', join_game )
 BROKER.subscribe('CHR_PONG_BOARDS', pong_game )
 BROKER.subscribe('CHR_INIT_BOARD', chr_init_board )
+BROKER.subscribe('CHR_PONG_BOARD', chr_pong_board )
+
+BROKER.subscribe('SOCKET_DISCONNECT', disconnect_user )
 
 
 

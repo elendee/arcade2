@@ -76,6 +76,14 @@ const bind_user = async( socket ) => { // , CHAT
 					})
 					break;
 
+				case 'chr_ping_board':
+					BROKER.publish('CHR_PONG_BOARD', {
+						socket: socket,
+						packet: packet,
+						// user: USER,
+					})
+					break;
+
 				// case 'chat':
 				// 	CHAT.handle_chat( socket, packet, USER )
 				// 	break;

@@ -65,6 +65,14 @@ const init = () => {
 			case 'chr_init_board':
 				BROKER.publish('CHR_INIT_BOARD', packet )
 				break;
+
+			case 'chr_pong_board':
+				BROKER.publish('CHR_PONG_BOARD', packet )
+				break;
+
+			case 'remove_user':
+				BROKER.publish('ARCADE_REMOVE_USER', packet )
+				break;
 			
 			// case 'chat':
 			// 	BROKER.publish('ROOM_HANDLE_CHAT', packet )

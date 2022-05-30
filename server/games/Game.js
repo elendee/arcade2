@@ -7,7 +7,9 @@ const USERS = require('../registers/USERS.js')
 
 
 
-
+const fail_extend = obj => {
+	log('flag', 'invalid class instantiated', obj.name || obj.uuid )
+}
 
 
 
@@ -24,10 +26,11 @@ class Game {
 
 	}
 
-	extend_init(){ /* extend */ this._is_valid = false }
-	get_start(){ /* extend */ return false }
-	get_listing(){ /* extend */ return false }
-
+	// necessary funcs but need to be written by children classes:
+	extend_init(){ this._is_valid = false }
+	get_start(){ return fail_extend( this ) }
+	get_listing(){ return fail_extend( this ) }
+	remove_user(){ return fail_extend( this ) }
 
 	add_user( socket ){
 		const user = socket?.request?.session?.USER
@@ -55,6 +58,7 @@ class Game {
 		})
 
 	}
+
 
 	broadcast( packet ){
 		for( const uuid in this._USERS ){
