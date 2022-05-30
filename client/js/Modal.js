@@ -1,5 +1,5 @@
-// import STATE from '../../STATE.js?v=25'
-// import BROKER from '../../EventBroker.js?v=25'
+// import STATE from '../../STATE.js?v=26'
+// import BROKER from '../../EventBroker.js?v=26'
 
 
 class Modal {

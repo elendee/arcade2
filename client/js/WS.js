@@ -1,12 +1,12 @@
-import ui from './ui.js?v=25'
-import env from './env.js?v=25'
-import hal from './hal.js?v=25'
-import BROKER from './EventBroker.js?v=25'
-import USER from './USER.js?v=25'
+import ui from './ui.js?v=26'
+import env from './env.js?v=26'
+import hal from './hal.js?v=26'
+import BROKER from './EventBroker.js?v=26'
+import USER from './USER.js?v=26'
 import {
 	pretty_pre,
-} from './lib.js?v=25'
-// import USERS from './registers/USERS.js?v=25'
+} from './lib.js?v=26'
+// import USERS from './registers/USERS.js?v=26'
 
 
 
@@ -56,6 +56,10 @@ const init = () => {
 
 			case 'init_game':
 				BROKER.publish('INIT_GAME', packet )
+				break;
+
+			case 'chr_pong_boards':
+				BROKER.publish('CHR_PONG_BOARDS', packet )
 				break;
 			
 			// case 'chat':

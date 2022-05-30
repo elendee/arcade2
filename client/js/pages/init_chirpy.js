@@ -1,12 +1,16 @@
-import WS from '../WS.js?v=25'
-import BROKER from '../EventBroker.js?v=25'
+import WS from '../WS.js?v=26'
+import BROKER from '../EventBroker.js?v=26'
 import {
 	pretty_pre,
-} from '../lib.js?v=25'
-import hal from '../hal.js?v=25'
-import User from '../classes/User.js?v=25'
-import USER from '../USER.js?v=25'
-import USERS from '../registers/USERS.js?v=25'
+	build_input,
+	create,
+} from '../lib.js?v=26'
+import ui from '../ui.js?v=26'
+import { Modal } from '../Modal.js?v=26'
+import hal from '../hal.js?v=26'
+import User from '../classes/User.js?v=26'
+import USER from '../USER.js?v=26'
+import USERS from '../registers/USERS.js?v=26'
 
 
 
@@ -15,10 +19,113 @@ const content = document.querySelector('#content')
 
 
 
-// handlers
+
+const board_types = [{
+	name: 'desert',
+	label: 'desert',
+	value: 'desert',
+}]
+
+
+// DOM builders
+
+
+
+
+
+
+
+
+// client handlers 
+
+const pop_option = type => {
+	/*
+		modal: Join or Create a board
+	*/
+
+	const modal = new Modal({
+		type: type,
+	})
+
+	const header = document.createElement('h3')
+	header.innerHTML = type
+	modal.content.appendChild( header )
+
+	let select
+
+	switch( type ){
+
+		case 'create':
+			select = build_input('select', 'board type', 'type', null, {
+				options: board_types,
+			})
+			select.classList.add('chr-selection')
+			modal.content.appendChild( select )
+			break;
+
+		case 'join':
+			// join gets its values async, also gets the 'chr-selection' class added to select
+			const area = create('div', 'selection-area')
+			modal.content.appendChild( area )
+			BROKER.publish('SOCKET_SEND', {
+				type: 'chr_ping_boards',
+			})
+			break;
+
+		default:
+			hal('error', 'invalid option type', 3000 )
+			return;
+
+	}
+
+	const submit = document.createElement('div')
+	submit.classList.add('button')
+	submit.innerText = 'ok'
+	submit.addEventListener('click', () => {
+		const choice = document.querySelector('.modal.join .chr-selection')?.value || document.querySelector('.modal.create .chr-selection')?.value
+		if( !choice ){
+			hal('error', 'nothing selected', 5000 )
+			return
+		}
+		ui.spinner.show()
+		BROKER.publish('SOCKET_SEND', {
+			type: 'chr_init_board',
+			subtype: type,
+			choice: choice,
+		})
+	})
+	modal.content.appendChild( submit )
+
+	document.body.appendChild( modal.ele )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// server handlers
 
 const got_user = event => {
-	console.log('got user, requesting chirpy')
+	/*
+		player1 initial connection with user data
+	*/
+
 	BROKER.publish('SOCKET_SEND', {
 		type: 'join_game',
 		name: 'chirpy',
@@ -27,13 +134,13 @@ const got_user = event => {
 
 const handle_user = event => {
 	/*
-		player1 USER is NOT added to USERS registry.
-		when player1 joins a game USERS will get a 'new User()' like everyone else.
+		handler for 'pong user'
+		player1 WILL be included, so:
 		---use uuid--- to cross reference and access USER[ _private data ] when needed
 	*/
 	const { user } = event
 
-	console.log('got user')
+	// console.log('got user')
 
 	if( USERS[ user.uuid ]){ // redundant sends
 
@@ -50,7 +157,7 @@ const handle_user = event => {
 const init_game = event => {
 	const { state } = event
 
-	console.log('initializing game')
+	// console.log('initializing game')
 
 	hal('standard', `init ${ state.name }<br>${ pretty_pre( state ) }`, 5000 )
 
@@ -61,26 +168,73 @@ const init_game = event => {
 
 const show_lobby = () => {
 
-	console.log('showing lobby')
+	// console.log('showing lobby')
 
 	const join = document.createElement('div')
 	join.classList.add('option', 'button')
 	join.innerHTML = 'join a board'
 	join.addEventListener('click', () => {
-		hal('error', 'in development', 5 * 1000 )
+		pop_option('join')
 	})
 
 	const create = document.createElement('div')
 	create.classList.add('option', 'button')
 	create.innerHTML = 'create a board'
 	create.addEventListener('click', () => {
-		hal('error', 'in development', 5 * 1000 )
+		pop_option('create')
 	})
 
 	content.appendChild( join )
 	content.appendChild( create )
 
 }
+
+
+const handle_board_listing = event => {
+	/*
+		handler for Join game modal pong back
+	*/
+
+	ui.spinner.hide()
+
+	// ( type, label, name, placeholder, data ) => {
+	const { boards } = event
+	const reformat = []
+	let b
+	for( const uuid in boards ){
+		b = boards[ uuid ]
+		reformat.push({
+			name: b.name,
+			label: b.name,
+			value: b.uuid,
+		})
+	}
+	const board_select = build_input('select', 'Chirpy boards', 'board_join', false, {
+		options: reformat,
+	})
+
+	const modal = document.querySelector('.modal.join')
+	if( modal ){
+		modal.querySelector('.modal-content .selection-area').appendChild( board_select )
+		board_select.classList.add('chr-selection')
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -94,3 +248,4 @@ const socket = window.SOCKET = WS.init()
 BROKER.subscribe('ARCADE_INITIALIZED_USER', got_user )
 BROKER.subscribe('PONG_USER', handle_user )
 BROKER.subscribe('INIT_GAME', init_game )
+BROKER.subscribe('CHR_PONG_BOARDS', handle_board_listing )

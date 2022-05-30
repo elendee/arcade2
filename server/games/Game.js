@@ -25,8 +25,8 @@ class Game {
 	}
 
 	extend_init(){ /* extend */ this._is_valid = false }
-	
 	get_start(){ /* extend */ return false }
+	get_listing(){ /* extend */ return false }
 
 
 	add_user( socket ){

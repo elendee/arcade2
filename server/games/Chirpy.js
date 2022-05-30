@@ -30,6 +30,20 @@ class Board {
 		}
 	}
 
+	get_listing(){
+		const listing  = {
+			name: this.name,
+			users: [],
+		}
+		for( const uuid in this._USERS ){
+			listing.users.push({
+				name: this._USERS[ uuid ].name,
+				handle: this._USERS[ uuid ].handle,
+			})
+		}
+		return listing
+	}
+
 }
 
 

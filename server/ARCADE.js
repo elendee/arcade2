@@ -26,6 +26,41 @@ const GAMES = {}
 
 
 
+
+
+
+
+
+
+// ---------------------------------------------
+// lib
+// ---------------------------------------------
+
+const touch_game = async( name ) => {
+
+	if( GAMES[ name ] ) return GAMES[ name ]
+
+	const game = new Chirpy({
+		name: name,
+	})
+
+	await game.bring_online( GAMES )
+
+	if( !game._is_valid ) throw new Error('invalid game: ' + name )
+
+	return game
+
+}
+
+
+
+
+
+
+// ---------------------------------------------
+// socket handlers
+// ---------------------------------------------
+
 const init_user = async( event ) => {
 	/*
 		init user only, not location or game aware
@@ -48,31 +83,6 @@ const init_user = async( event ) => {
 
 	return true
 }
-
-
-
-
-
-
-const touch_game = async( name ) => {
-
-	if( GAMES[ name ] ) return GAMES[ name ]
-
-	const game = new Chirpy({
-		name: name,
-	})
-
-	await game.bring_online( GAMES )
-
-	if( !game._is_valid ) throw new Error('invalid game: ' + name )
-
-	return game
-
-}
-
-
-
-
 
 
 
@@ -99,68 +109,48 @@ const join_game = async( event ) => {
 
 }
 
+const pong_game = event => {
+	const { socket, packet } = event
+
+	const p = {
+		type: 'chr_pong_boards',
+		boards: []
+	}
+
+	if( GAMES.chirpy ){
+		for( const uuid in GAMES.chirpy._BOARDS ){
+			const g = GAMES.chirpy._BOARDS[ uuid ].get_listing()
+			p.boards.push( g )
+		}
+	}
+
+	socket.send( JSON.stringify( p ) )
+
+}
 
 
 
 
-// let sweeping = false
-
-// const init = async() => {
-// 	/*
-// 		init master sweep
-// 	*/
-// 	sweeping = setInterval(() => {
-
-// 		// sweep games
-// 		for( const name in GAMES ){
-// 			if( !GAMES[ name ].pulse ){
-// 				GAMES[ name ].close( GAMES )
-// 				.catch( err => {
-// 					log('flag', 'err game close', err )
-// 				})
-// 			}
-// 		}
-
-// 		// sweep arcade
-// 		if( !Object.keys( GAMES )){
-// 			log('flag', 'no games online')
-// 			close()
-// 		}
-
-// 	}, env.LOCAL ? 2000 : 10 * 1000 )
-// }
 
 
 
 
-// const close = () => {
-// 	/*
-// 		force close (or close) entire arcade
-// 	*/
-
-// 	// just in case
-// 	for( const name in GAMES ){
-// 		GAMES[ name ].close()
-// 		.catch( err => {
-// 			log('flag', 'err game close', err )
-// 		})
-// 	}
-
-// 	// stop sweeping
-// 	log('flag', 'arcade closing')
-// 	clearInterval( sweeping )
-// 	sweeping = false
-
-// 	return true
-
-// }
-
-
-
-
+// ---------------------------------------------
+// BROKER
+// ---------------------------------------------
 
 BROKER.subscribe('ARCADE_INIT_USER', init_user )
 BROKER.subscribe('ARCADE_JOIN_GAME', join_game )
+BROKER.subscribe('CHR_PONG_BOARDS', pong_game )
+
+
+
+
+
+
+// ---------------------------------------------
+// export
+// ---------------------------------------------
 
 module.exports = {
 	// init,

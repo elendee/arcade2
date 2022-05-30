@@ -1,6 +1,6 @@
-import env from './env.js?v=25'
-import fetch_wrap from './fetch_wrap.js?v=25'
-import hal from './hal.js?v=25'
+import env from './env.js?v=26'
+import fetch_wrap from './fetch_wrap.js?v=26'
+import hal from './hal.js?v=26'
 
 import { 
 	Object3D, 
@@ -527,6 +527,57 @@ const pretty_pre = content => {
 
 
 
+const build_input = ( type, label, name, placeholder, data ) => {
+
+	const wrapper = document.createElement('div')
+	wrapper.classList.add('arc-input')
+
+	let ele
+
+	const label_ele = document.createElement('label')
+	label_ele.innerText = label
+	wrapper.appendChild( label_ele )
+
+	switch( type ){
+		case 'select':
+			ele = document.createElement('select')
+			ele.name = name
+			const starter = document.createElement('option')
+			starter.innerText = '(select a value)'
+			ele.appendChild( starter )
+			for( const option of data.options ){
+				const opt = document.createElement('option')
+				opt.innerText = option.label
+				opt.value = option.value
+				opt.name = option.name
+				ele.appendChild( opt )
+			}
+			break;
+
+		default:
+			ele = document.createElement('input')
+			ele.type = 'text'
+			ele.name = name
+			ele.placeholder = placeholder
+			console.log('unhandled input type', type, label, name, placeholder )
+			break;
+	}
+
+	wrapper.appendChild( ele )
+
+	return wrapper
+
+
+}
+
+
+const create = ( type, ...classes ) => {
+	const ele = document.createElement( type )
+	for( const c of classes ) ele.classList.add( classes )
+	return ele
+}
+
+
 
 export {
 
@@ -559,6 +610,7 @@ export {
 
 	build_spreadsheet_row,
 	build_spreadsheet_column,
+	build_input,
 
 	MAPS,
 	COINLIST,
@@ -568,4 +620,6 @@ export {
 	over_cap,
 	generate_content,
 	pretty_pre,
+
+	create,
 }

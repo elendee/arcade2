@@ -195,7 +195,7 @@ input.input{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 9;
+	z-index: 999999;
 	transition: .3s;
 	background: rgba(0, 0, 0, .2);
 
@@ -437,6 +437,12 @@ input.button:hover{
 	background: rgb(255, 50, 50);
 }
 
+.arc-input{
+	border: 1px solid lightgrey;
+}
+.arc-input label{
+	display: block;
+}
 
 @media screen and ( max-width: 800px ){
 
