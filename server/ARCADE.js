@@ -1,11 +1,12 @@
 const env = require('./.env.js')
 const log = require('./log.js')
+const lib = require('./lib.js')
 const BROKER = require('./BROKER.js')
 const User = require('./persistent/User.js')
-const SOCKETS = require("./SOCKETS.js")
+const SOCKETS = require("./registers/SOCKETS.js")
 const ROUTER = require("./ROUTER.js")
-const USERS = require("./USERS.js")
-const Game = require('./Game.js')
+const USERS = require("./registers/USERS.js")
+const Chirpy = require('./games/Chirpy.js')
 
 
 
@@ -53,29 +54,42 @@ const init_user = async( event ) => {
 
 
 
-const init_game = async( event ) => {
-	const { socket, packet } = event
-	const { name } = packet
+const touch_game = async( name ) => {
 
+	if( GAMES[ name ] ) return GAMES[ name ]
 
-
-	if( GAMES[ name ]){
-		return log('flag', 'game already initted: ' + name )
-	}
-
-	const game = new Game({
+	const game = new Chirpy({
 		name: name,
 	})
 
-	if( !game._is_valid ){
-		return log('flag', 'invalid game init', packet )
-	}
-
 	await game.bring_online( GAMES )
 
-	await game.add_user( socket )
+	if( !game._is_valid ) throw new Error('invalid game: ' + name )
 
-	log('flag','init game', name )
+	return game
+
+}
+
+
+
+
+
+
+
+const join_game = async( event ) => {
+	const { socket, packet } = event
+	const { name } = packet
+
+	try{
+
+		const game = await touch_game( name )
+
+		await game.add_user( socket )
+
+	}catch( err ){
+		return lib.return_fail_socket( socket, 'server encountered an error joining game', 10 * 1000, err )
+	}
+
 }
 
 
@@ -139,7 +153,7 @@ const init_game = async( event ) => {
 
 
 BROKER.subscribe('ARCADE_INIT_USER', init_user )
-BROKER.subscribe('ARCADE_INIT_GAME', init_game )
+BROKER.subscribe('ARCADE_JOIN_GAME', join_game )
 
 module.exports = {
 	// init,

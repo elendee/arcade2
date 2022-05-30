@@ -1,10 +1,8 @@
 import env from './env.js?v=24'
+import User from './classes/User.js?v=24'
 
-const user = {}
-
-user.hydrate = data => {
-	for( const key in data ) USER[ key ] = data[ key ]
-}
+const user = new User()
+user.player1 = true
 
 if( env.EXPOSE ) window.USER = user
 

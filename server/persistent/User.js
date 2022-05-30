@@ -96,52 +96,52 @@ class User extends Persistent {
 	}
 
 
-	refresh_joined_boards( socket ){
-		/*
-			triggered when unlogged users hit max boards
-			session boards can get stale if db is updated but sessions are not
-			so this makes sure session boards actually exist still
-		*/
-		// dumb validate
-		if( !this._joined_boards || this._joined_boards.length > 10 ){
-			return lib.return_fail({
-				msg: `unlogged user ${ this.uuid.substr(0,6) } has messed up session boards`,
-				boards: this._joined_boards,
-			})
-		}
-		// clean
-		const pool = DB.getPool()
-		let sql
-		let c
-		for( let i = 0; i < this._joined_boards.length; i++ ){
-			sql = 'SELECT * FROM boards WHERE id=?'
-			const id = this._joined_boards[i]
-			setTimeout(() => {
-				pool.queryPromise( sql, id )
-				.then( res => {
-					if( res.error  ){
-						log('flag', res.error )
-					}else{
-						if( !res?.results?.length ){ // db board not found; so delete from mem
-							this._joined_boards.splice( this._joined_boards.indexOf(id), 1 )
-							log('flag', `removing ${ id }, boards now: ${ this._joined_boards }`)
-						}
-					}
-				})
-				.catch( err => {
-					log('flag', err )
-				})
-			}, i * 1000 )
-			c = i
-		}
-		setTimeout(() => {
-			if( !socket ){
-				log('flag', 'socket deleted before save', this.uuid.substr(0,4))
-				return
-			}
-			socket.request.session.save()
-		}, c * 1000 )
-	}
+	// refresh_joined_boards( socket ){
+	// 	/*
+	// 		triggered when unlogged users hit max boards
+	// 		session boards can get stale if db is updated but sessions are not
+	// 		so this makes sure session boards actually exist still
+	// 	*/
+	// 	// dumb validate
+	// 	if( !this._joined_boards || this._joined_boards.length > 10 ){
+	// 		return lib.return_fail({
+	// 			msg: `unlogged user ${ this.uuid.substr(0,6) } has messed up session boards`,
+	// 			boards: this._joined_boards,
+	// 		})
+	// 	}
+	// 	// clean
+	// 	const pool = DB.getPool()
+	// 	let sql
+	// 	let c
+	// 	for( let i = 0; i < this._joined_boards.length; i++ ){
+	// 		sql = 'SELECT * FROM boards WHERE id=?'
+	// 		const id = this._joined_boards[i]
+	// 		setTimeout(() => {
+	// 			pool.queryPromise( sql, id )
+	// 			.then( res => {
+	// 				if( res.error  ){
+	// 					log('flag', res.error )
+	// 				}else{
+	// 					if( !res?.results?.length ){ // db board not found; so delete from mem
+	// 						this._joined_boards.splice( this._joined_boards.indexOf(id), 1 )
+	// 						log('flag', `removing ${ id }, boards now: ${ this._joined_boards }`)
+	// 					}
+	// 				}
+	// 			})
+	// 			.catch( err => {
+	// 				log('flag', err )
+	// 			})
+	// 		}, i * 1000 )
+	// 		c = i
+	// 	}
+	// 	setTimeout(() => {
+	// 		if( !socket ){
+	// 			log('flag', 'socket deleted before save', this.uuid.substr(0,4))
+	// 			return
+	// 		}
+	// 		socket.request.session.save()
+	// 	}, c * 1000 )
+	// }
 
 
 	async save(){

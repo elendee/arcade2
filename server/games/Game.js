@@ -1,6 +1,8 @@
-const log = require('./log.js')
-const lib = require('./lib.js')
-const SOCKETS = require('./SOCKETS.js')
+const log = require('../log.js')
+const lib = require('../lib.js')
+const SOCKETS = require('../registers/SOCKETS.js')
+const User = require('../persistent/User.js')
+const USERS = require('../registers/USERS.js')
 
 
 
@@ -18,12 +20,12 @@ class Game {
 
 		this._USERS = {}
 
-		this.init()
+		this.extend_init()
 
 	}
 
 
-	init(){
+	extend_init(){
 		/*
 			Games must extend this class 
 			then overwrite this function to make _is_valid to be true
@@ -36,13 +38,24 @@ class Game {
 
 	add_user( socket ){
 		const user = socket?.request?.session?.USER
-		if( !user ) return log('flag', 'no user to add to game: ' + this.name )
+		if( !user ) return lib.return_fail_socket( socket, 'no user to add to game: ' + this.name, 5000, 'no user given for join')
 
-		this._USERS[ user.uuid ] = user
+		if( this._USERS[ user.uuid ]) return lib.return_fail_socket(  socket, 'user is already in game', 5000, 'user attempted 2 joins to: ' + this.name )
+
+		// touch from global registry
+		let u
+		if( USERS[ user.uuid ] ){ // unlikely case of existing globally but not in game
+			u = USERS[ user.uuid ]
+		}else{
+			u = new User( user )
+			USERS[ u.uuid ] = u				
+		}
+
+		this._USERS[ u.uuid ] = u
 
 		this.broadcast({
 			type: 'pong_user',
-			user: user.publish(),
+			user: u.publish(),
 		})
 
 	}
@@ -68,7 +81,8 @@ class Game {
 			}, 5000 )
 		}
 
-		// any other stuff..
+		// registry
+		GAMES[ this.name ] = this
 
 	}
 

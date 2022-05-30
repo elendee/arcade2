@@ -4,6 +4,8 @@ import env from './env.js?v=24'
 import hal from './hal.js?v=24'
 import BROKER from './EventBroker.js?v=24'
 import USER from './USER.js?v=24'
+import USERS from './registers/USERS.js?v=24'
+
 
 
 
@@ -28,38 +30,22 @@ const init = () => {
 
 	SOCKET.onmessage = function( msg ){
 
-		packet = false
-
-		try{
-
-			packet = JSON.parse( msg.data )
-
-		}catch( e ){
-
-			SOCKET.bad_messages++
-			if( SOCKET.bad_messages > 100 ) {
-				console.log('100+ faulty socket messages', msg )
-				SOCKET.bad_messages = 0
-			}
-			console.log('failed to parse server msg: ', msg )
-			return false	
-
-		}
-
-		if( 1 && env.LOCAL && !env.LOG_WS_RECEIVE_EXCLUDES.includes( packet.type ) ){
-			console.log( packet )
-		}
+		packet = buffer_packet( msg )
 
 		switch( packet.type ){
 
 			case 'init_user':
-				// console.log( packet )
 				USER.hydrate( packet.user )
 				if( env.LOCAL ) hal('system', `user:<br><pre>${ JSON.stringify( USER, false, 2 ) }</pre>`)
+				BROKER.publish('ARCADE_INITIALIZED_USER')
 				break;
 
 			case 'pong':
 				BROKER.publish('PONG')
+				break;
+
+			case 'pong_user':
+				BROKER.publish('PONG_USER', packet )
 				break;
 			
 			// case 'chat':
@@ -120,6 +106,42 @@ const init = () => {
 	return SOCKET
 
 }
+
+
+
+
+
+const buffer_packet = msg => {
+
+	let packet
+
+	try{
+
+		packet = JSON.parse( msg.data )
+
+	}catch( e ){
+
+		SOCKET.bad_messages++
+		if( SOCKET.bad_messages > 100 ) {
+			console.log('100+ faulty socket messages', msg )
+			SOCKET.bad_messages = 0
+		}
+		console.log('failed to parse server msg: ', msg )
+		return false	
+
+	}
+
+	if( 1 && env.LOCAL && !env.LOG_WS_RECEIVE_EXCLUDES.includes( packet.type ) ){
+		console.log( packet )
+	}
+
+	return packet
+
+}
+
+
+
+
 
 
 let send_packet

@@ -57,79 +57,11 @@ const bind_user = async( socket ) => { // , CHAT
 					socket.send( JSON.stringify({ type: 'pong' }))
 					break;
 
-				case 'ping_board':
-					BROKER.publish('BOARDS_PING', {
+				case 'join_game':
+					BROKER.publish('ARCADE_JOIN_GAME', {
 						socket: socket,
 						packet: packet,
 					})
-					break;
-
-				case 'ping_user':
-					BROKER.publish('USER_PING', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'save':
-					BROKER.publish('BOARD_SAVE', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'add_board':
-					BROKER.publish('BOARD_ADD', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'ping_options':
-					BROKER.publish('BOARDS_PONG_OPTIONS', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'board_set_option':
-					BROKER.publish('BOARD_SET_OPTION', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'touch':
-					BROKER.publish('BOARD_TOUCH', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'join_board':
-					BROKER.publish('BOARD_JOIN', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'create_anchor':
-					BROKER.publish('BOARD_ANCHOR', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'ping_anchor':
-					BROKER.publish('BOARDS_PING_ANCHOR', {
-						socket: socket,
-						packet: packet,
-					})
-					break;
-
-				case 'ext_init':
-					log('flag', 'oh no... ') // 
-					// wait but it cant even bind..................
 					break;
 
 				// case 'chat':
