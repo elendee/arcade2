@@ -33,7 +33,7 @@ const init = () => {
 
 	SOCKET.onmessage = function( msg ){
 
-		packet = buffer_packet( msg )
+		packet = sanitize_packet( msg )
 		if( !packet ) return
 
 		// console.log( packet )
@@ -121,7 +121,8 @@ const init = () => {
 
 
 
-const buffer_packet = msg => {
+// packet santizing
+const sanitize_packet = msg => {
 
 	let packet
 
@@ -151,9 +152,45 @@ const buffer_packet = msg => {
 
 
 
+// heartbeats
+let last_ping = Date.now()
+let last_ping_call = 0
+let ping = () => {
+
+	// returning idle browser tabs may fire this a ton
+	if( Date.now() - last_ping_call < 100 ){ 
+		hal('error', 'blocke multiple ping calls - you may need to refresh page', 5000 ) 
+		return
+	}
+
+	last_ping_call = Date.now()
+
+	// proceed with ping
+	setTimeout(() => {
+		if( !last_ping ){
+			hal('error', 'server not responding; try refreshing page')
+			return
+		}
+		BROKER.publish('SOCKET_SEND', {
+			type: 'ping',
+		})
+		last_ping = false
+		ping()
+
+	}, 10 * 1000)
+
+}
+ping()
+
+const pong = event => {
+	last_ping = Date.now()
+}
 
 
 
+
+
+// send callback
 let send_packet
 
 const send = event => {
@@ -166,6 +203,7 @@ const send = event => {
 
 
 BROKER.subscribe('SOCKET_SEND', send )
+BROKER.subscribe('PONG', pong )
 
 export default {
 	init: init,
