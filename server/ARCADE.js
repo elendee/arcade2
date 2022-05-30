@@ -188,27 +188,28 @@ const chr_pong_board = async( event ) => {
 
 	const user = socket.request?.session?.USER
 
-	// Chirpy manager
-	if( !GAMES.chirpy ){
-		if( !env.PRODUCTION ){
-			GAMES.chirpy = await touch_game('chirpy')
-		}else{
-			return lib.return_fail_socket( socket, 'no boards online', 15000 )
+	// standard
+	if( GAMES.chirpy ){
+		let board = GAMES.chirpy.get_user_board( user.uuid )
+		if( board ){
+			board.pong( socket )
+			return true
 		}
 	}
 
-	// Chirpy board
-	let board = GAMES.chirpy.get_user_board( user.uuid )
+	if( env.PRODUCTION ){  // no board was found
 
-	if( !env.PRODUCTION ){
-		log('flag', 'spoofing board for local')
+		return lib.return_fail_socket( socket, 'no boards online', 15000 )
+
+	}else{ // go ahead and spoof 
+
+		log('flag', 'spoofing non-production board')
+		
+		GAMES.chirpy = await touch_game('chirpy')
 		board = await GAMES.chirpy.init_board('desert', user )
+		board.pong( socket )
+
 	}
-
-	if( !board ) return lib.return_fail_socket( socket, 'board not found', 10 * 1000, false ) 
-
-	board.pong( socket )
-
 }
 
 
