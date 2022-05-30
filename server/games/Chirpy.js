@@ -1,4 +1,8 @@
 const Game = require('./Game.js')
+const PUBLIC = require('../data/PUBLIC.js')
+const {
+	arc_uuid,
+} = require('../lib.js')
 
 
 
@@ -6,7 +10,7 @@ const Game = require('./Game.js')
 class Tile {
 	constructor( init ){
 		init = init || {}
-
+		this.number = init.number
 	}
 }
 
@@ -16,13 +20,16 @@ class Board {
 
 	constructor( init ){
 		init = init || {}
+		this.type = init.type
+		this.size = init.size
+		this.uuid = init.uuid || arc_uuid()
 		this._TILES = []
 	}
 
-	init_tiles( n ){
-		for( let x = 0; x < n; x++ ){
+	init_tiles(){
+		for( let x = 0; x < this.size; x++ ){
 			this._TILES[x] = []
-			for( let z = 0; z < n; z++ ){
+			for( let z = 0; z < this.size; z++ ){
 				this._TILES[x][z] = new Tile({
 					number: Math.random(),
 				})
@@ -33,6 +40,9 @@ class Board {
 	get_listing(){
 		const listing  = {
 			name: this.name,
+			uuid: this.uuid,
+			type: this.type,
+			size: this.size,
 			users: [],
 		}
 		for( const uuid in this._USERS ){
@@ -63,6 +73,21 @@ class Chirpy extends Game {
 
 	extend_init(){
 		this._is_valid = true // ( deafult bool for all Game extends )
+
+	}
+
+	async init_board( choice ){
+		const keys = PUBLIC.BOARD_TYPES.map( ele => { return ele.name })
+		if( !keys.includes( choice )) throw new Error('invalid board choice', choice )
+
+		const board = new Board({
+			type: choice,
+			size: 10,
+		})
+
+		this._BOARDS[ board.uuid ] = board
+
+		return board
 
 	}
 

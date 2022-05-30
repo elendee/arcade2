@@ -1,5 +1,5 @@
 
-// const cache = '?v=26'
+// const cache = '?v=27'
 const log = require('../server/log.js')
 const lib = require('../server/lib.js')
 const env = require('../server/.env.js')
@@ -43,15 +43,16 @@ const global_data = () => { return `<div id="global-data">${ JSON.stringify( PUB
 const scripts = {
 
 	// auth
-	index: `<script type='module' defer='defer' src='/js/auth/init_index.js?v=26'></script>`,
-	auth: `<script type='module' defer='defer' src='/js/auth/init_auth.js?v=26'></script>`,
-	account: `<script type='module' defer='defer' src='/js/auth/init_account.js?v=26'></script>`,
-	contacts: `<script type='module' defer='defer' src='/js/auth/init_contacts.js?v=26'></script>`,
-	admin: `<script type='module' defer='defer' src='/js/auth/init_admin.js?v=26'></script>`,
-	chirpy: `<script type='module' defer='defer' src='/js/pages/init_chirpy.js?v=26'></script>`,
-	await_confirm: `<script type='module' defer='defer' src='/js/auth/init_await-confirm.js?v=26'></script>`,
-	send_confirm: `<script type='module' defer='defer' src='/js/auth/init_send-confirm.js?v=26'></script>`,
-	redirect: `<script type='module' defer='defer' src='/js/auth/init_redirect.js?v=26'></script>`,
+	index: `<script type='module' defer='defer' src='/js/auth/init_index.js?v=27'></script>`,
+	auth: `<script type='module' defer='defer' src='/js/auth/init_auth.js?v=27'></script>`,
+	account: `<script type='module' defer='defer' src='/js/auth/init_account.js?v=27'></script>`,
+	contacts: `<script type='module' defer='defer' src='/js/auth/init_contacts.js?v=27'></script>`,
+	admin: `<script type='module' defer='defer' src='/js/auth/init_admin.js?v=27'></script>`,
+	chirpy: `<script type='module' defer='defer' src='/js/pages/init_chirpy.js?v=27'></script>`,
+	chirpy_board: `<script type='module' defer='defer' src='/js/pages/chirpy/init_chirpy_board.js?v=27'></script>`,
+	await_confirm: `<script type='module' defer='defer' src='/js/auth/init_await-confirm.js?v=27'></script>`,
+	send_confirm: `<script type='module' defer='defer' src='/js/auth/init_send-confirm.js?v=27'></script>`,
+	redirect: `<script type='module' defer='defer' src='/js/auth/init_redirect.js?v=27'></script>`,
 
 	// misc
 	fabric: `<script src='/inc/fabric.min.js' defer='defer'></script>`,
@@ -64,18 +65,19 @@ const scripts = {
 const styles = {
 
 	// auth
-	index: `<link rel='stylesheet' href='/css/splash.css?v=26'>`,
-	base: `<link rel='stylesheet' href='/css/base.css?v=26'>`,
-	auth: `<link rel='stylesheet' href='/css/auth.css?v=26'>`,
-	account: `<link rel='stylesheet' href='/css/account.css?v=26'>`,
-	chirpy: `<link rel='stylesheet' href='/css/chirpy.css?v=26'>`,
-	spreadsheets: `<link rel='stylesheet' href='/css/spreadsheets.css?v=26'>`,
-	contacts: `<link rel='stylesheet' href='/css/contacts.css?v=26'>`,
-	admin: `<link rel='stylesheet' href='/css/admin.css?v=26'>`,
-	modal: `<link rel='stylesheet' href='/css/modal.css?v=26'>`,
+	index: `<link rel='stylesheet' href='/css/splash.css?v=27'>`,
+	base: `<link rel='stylesheet' href='/css/base.css?v=27'>`,
+	auth: `<link rel='stylesheet' href='/css/auth.css?v=27'>`,
+	account: `<link rel='stylesheet' href='/css/account.css?v=27'>`,
+	chirpy: `<link rel='stylesheet' href='/css/chirpy.css?v=27'>`,
+	chirpy_board: `<link rel='stylesheet' href='/css/chirpy_board.css?v=27'>`,
+	spreadsheets: `<link rel='stylesheet' href='/css/spreadsheets.css?v=27'>`,
+	contacts: `<link rel='stylesheet' href='/css/contacts.css?v=27'>`,
+	admin: `<link rel='stylesheet' href='/css/admin.css?v=27'>`,
+	modal: `<link rel='stylesheet' href='/css/modal.css?v=27'>`,
 
 	// pages
-	page: `<link rel='stylesheet' href='/css/page.css?v=26'>`,
+	page: `<link rel='stylesheet' href='/css/page.css?v=27'>`,
 
 }
 
@@ -461,6 +463,28 @@ module.exports = function render( type, request, data ){
 							
 
 						</div>
+					</div>
+				</body>
+			</html>
+			`
+
+
+		case 'chirpy_board':
+			css_includes += styles.chirpy_board + styles.modal
+			script_includes += scripts.chirpy_board
+
+				// ${ build_header( type, request, '???' )}
+			return `
+			<html>
+				<head>
+					${ build_meta() }
+					${ css_includes }
+					${ script_includes }
+				</head>
+				<body class='${ type }'>
+					${ popups }
+					${ global_data() }
+					<div class='game-contain'>
 					</div>
 				</body>
 			</html>

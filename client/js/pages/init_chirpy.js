@@ -1,30 +1,27 @@
-import WS from '../WS.js?v=26'
-import BROKER from '../EventBroker.js?v=26'
+import env from '../env.js?v=27'
+import WS from '../WS.js?v=27'
+import BROKER from '../EventBroker.js?v=27'
 import {
 	pretty_pre,
 	build_input,
 	create,
-} from '../lib.js?v=26'
-import ui from '../ui.js?v=26'
-import { Modal } from '../Modal.js?v=26'
-import hal from '../hal.js?v=26'
-import User from '../classes/User.js?v=26'
-import USER from '../USER.js?v=26'
-import USERS from '../registers/USERS.js?v=26'
+} from '../lib.js?v=27'
+import ui from '../ui.js?v=27'
+import { Modal } from '../Modal.js?v=27'
+import hal from '../hal.js?v=27'
+import User from '../classes/User.js?v=27'
+import USER from '../USER.js?v=27'
+import USERS from '../registers/USERS.js?v=27'
+import GLOBAL from '../GLOBAL.js?v=27'
+// import chirpy_board from './chirpy_board.js?v=27'
 
 
-
+	
 
 const content = document.querySelector('#content')
 
 
 
-
-const board_types = [{
-	name: 'desert',
-	label: 'desert',
-	value: 'desert',
-}]
 
 
 // DOM builders
@@ -57,7 +54,7 @@ const pop_option = type => {
 
 		case 'create':
 			select = build_input('select', 'board type', 'type', null, {
-				options: board_types,
+				options: GLOBAL.BOARD_TYPES,
 			})
 			select.classList.add('chr-selection')
 			modal.content.appendChild( select )
@@ -82,7 +79,7 @@ const pop_option = type => {
 	submit.classList.add('button')
 	submit.innerText = 'ok'
 	submit.addEventListener('click', () => {
-		const choice = document.querySelector('.modal.join .chr-selection')?.value || document.querySelector('.modal.create .chr-selection')?.value
+		const choice = document.querySelector('.modal.join .chr-selection select')?.value || document.querySelector('.modal.create .chr-selection select')?.value
 		if( !choice ){
 			hal('error', 'nothing selected', 5000 )
 			return
@@ -223,7 +220,14 @@ const handle_board_listing = event => {
 
 
 
+const handle_board = event => {
+	const { subtype, user_uuid, board } = event
+	// console.log('woohoo ', event )
+	ui.spinner.hide()
 
+	location.assign( '/chirpy_board/' + board.uuid )
+
+}
 
 
 
@@ -249,3 +253,4 @@ BROKER.subscribe('ARCADE_INITIALIZED_USER', got_user )
 BROKER.subscribe('PONG_USER', handle_user )
 BROKER.subscribe('INIT_GAME', init_game )
 BROKER.subscribe('CHR_PONG_BOARDS', handle_board_listing )
+BROKER.subscribe('CHR_INIT_BOARD', handle_board )

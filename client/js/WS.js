@@ -1,12 +1,12 @@
-import ui from './ui.js?v=26'
-import env from './env.js?v=26'
-import hal from './hal.js?v=26'
-import BROKER from './EventBroker.js?v=26'
-import USER from './USER.js?v=26'
+import ui from './ui.js?v=27'
+import env from './env.js?v=27'
+import hal from './hal.js?v=27'
+import BROKER from './EventBroker.js?v=27'
+import USER from './USER.js?v=27'
 import {
 	pretty_pre,
-} from './lib.js?v=26'
-// import USERS from './registers/USERS.js?v=26'
+} from './lib.js?v=27'
+// import USERS from './registers/USERS.js?v=27'
 
 
 
@@ -42,7 +42,7 @@ const init = () => {
 
 			case 'init_user':
 				USER.hydrate( packet.user )
-				hal('system', `user:<br>${ pretty_pre( USER ) }`, 10 * 1000 )
+				// hal('system', `user:<br>${ pretty_pre( USER ) }`, 10 * 1000 )
 				BROKER.publish('ARCADE_INITIALIZED_USER')
 				break;
 
@@ -60,6 +60,10 @@ const init = () => {
 
 			case 'chr_pong_boards':
 				BROKER.publish('CHR_PONG_BOARDS', packet )
+				break;
+
+			case 'chr_init_board':
+				BROKER.publish('CHR_INIT_BOARD', packet )
 				break;
 			
 			// case 'chat':
@@ -102,6 +106,9 @@ const init = () => {
 
 			default: 
 				console.log('unknown packet: ', packet )
+				if( env.LOCAL ){
+					hal('standard', `unknown packet<br>${ pretty_pre( packet ) }`, 10 * 1000 )
+				}
 				break
 		}
 

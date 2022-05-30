@@ -128,7 +128,40 @@ const pong_game = event => {
 
 }
 
+const chr_init_board = async( event ) => {
 
+	const { socket, packet, user } = event
+
+	try {
+		const { subtype, choice } = packet
+
+		let board
+
+		switch( subtype ){
+
+			case 'join':
+				break;
+
+			case 'create':
+				board = await GAMES.chirpy.init_board( choice )
+				break;
+
+			default:
+				return lib.return_fail_socket(socket, 'invalid type', 5000, false )
+		}
+
+		GAMES.chirpy.broadcast({
+			type: 'chr_init_board',
+			subtype: subtype,
+			user_uuid: user.uuid,
+			board: board.get_listing(),
+		})
+
+	}catch( err ){
+		return lib.return_fail_socket(socket, 'error initializing game', 5000, err )
+	}
+
+}
 
 
 
@@ -142,6 +175,7 @@ const pong_game = event => {
 BROKER.subscribe('ARCADE_INIT_USER', init_user )
 BROKER.subscribe('ARCADE_JOIN_GAME', join_game )
 BROKER.subscribe('CHR_PONG_BOARDS', pong_game )
+BROKER.subscribe('CHR_INIT_BOARD', chr_init_board )
 
 
 

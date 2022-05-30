@@ -105,6 +105,7 @@ if( env.LOCAL ){
 	exp.use('/resource', express.static( './resource' )) // __dirname + 
 	exp.use('/node_modules/three', express.static( './node_modules/three' )) // __dirname + 
 	exp.use('/geometries', express.static( './geometries' )) // __dirname + 
+	exp.use('/three-patch', express.static( './three-patch' )) // __dirname + 
 }
 
 exp.use( bodyParser.json() )
@@ -172,6 +173,10 @@ exp.get('/data/:type', ( request, response ) => {
 
 exp.get('/chirpy', ( request, response) => {
 	response.send( render( 'chirpy', request ) )	
+})
+
+exp.get('/chirpy_board/*', ( request, response) => {
+	response.send( render( 'chirpy_board', request ) )	
 })
 
 exp.get('/robots.txt', (request, response) => {

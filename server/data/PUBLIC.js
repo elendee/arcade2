@@ -33,4 +33,10 @@ module.exports = {
 		UNLOGGED_BOARD_HOURS: 24,
 	},
 
+	BOARD_TYPES: [{
+		name: 'desert',
+		label: 'desert',
+		value: 'desert',
+	}]
+
 }

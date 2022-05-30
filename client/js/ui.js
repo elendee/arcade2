@@ -1,8 +1,8 @@
-import env from './env.js?v=26'
+import env from './env.js?v=27'
 
-// import GLOBAL from './GLOBAL.js?v=26'
-// import hal from './hal.js?v=26'
-import BROKER from './EventBroker.js?v=26'
+// import GLOBAL from './GLOBAL.js?v=27'
+// import hal from './hal.js?v=27'
+import BROKER from './EventBroker.js?v=27'
 
 
 
@@ -76,14 +76,25 @@ for( let i = 0; i < buttons.length; i++ ){
 
 
 const toggle = document.getElementById('mobile-toggle')
-toggle.addEventListener('click', () => {
-	const links = document.getElementById('links')
-	links.classList.toggle('hidden')
-})
-const links = document.getElementById('links')
-if( window.innerWidth < 800 ){
-	links.classList.add('hidden')
+if( toggle ){ // game pages have no header
+	toggle.addEventListener('click', () => {
+		const links = document.getElementById('links')
+		links.classList.toggle('hidden')
+	})	
 }
+const links = document.getElementById('links')
+if( links ){
+	if( window.innerWidth < 800 ){
+		links.classList.add('hidden')
+	}	
+}
+
+
+
+
+
+
+
 
 
 

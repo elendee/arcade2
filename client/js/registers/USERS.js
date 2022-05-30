@@ -1,5 +1,5 @@
-import env from '../env.js?v=26'
-// import User from './classes/User.js?v=26'
+import env from '../env.js?v=27'
+// import User from './classes/User.js?v=27'
 
 const users = {}
 

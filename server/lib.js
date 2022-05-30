@@ -481,6 +481,10 @@ const parse_slug = value => {
 }
 
 
+const arc_uuid = () => {
+	return random_hex( 8 )
+}
+
 module.exports = {
 	static_chars,
 	ORIGIN,
@@ -522,4 +526,5 @@ module.exports = {
 	random_bar_color,
 	is_emu_uuid,
 	parse_slug,
+	arc_uuid,
 }
