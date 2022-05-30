@@ -42,7 +42,7 @@ const init = () => {
 
 			case 'init_user':
 				USER.hydrate( packet.user )
-				if( env.LOCAL ) hal('system', `user:<br>${ pretty_pre( USER ) }`, 10 * 1000 )
+				hal('system', `user:<br>${ pretty_pre( USER ) }`, 10 * 1000 )
 				BROKER.publish('ARCADE_INITIALIZED_USER')
 				break;
 
