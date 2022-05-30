@@ -29,9 +29,8 @@ const gatekeep = require('./server/gatekeep.js')
 const render = require('./client/arcade2_html.js')
 const auth = require('./server/auth.js')
 
-// const MAIN = require('./server/OPS_main.js')
-// const ADMIN = require('./server/OPS_admin.js')
 const ACCOUNT = require('./server/OPS_account.js')
+const ARCADE = require('./server/ARCADE.js')
 
 const WSS = require('./server/WSS.js')();
 
@@ -374,15 +373,13 @@ DB.initPool(( err, pool ) => {
 			return false
 		}
 
-		log('flag', 'UNHANDLED WEBSOCKET INITTTTTTTTTTTTTTT', socket.request.sessionID )
-
-		// if( !BoardHandler.online ){
-		// 	await BoardHandler.init()
+		// if( !ARCADE.sweeping ){
+		// 	await ARCADE.init()
 		// }
 
-		// BROKER.publish('BOARDS_INIT_USER', {
-		// 	socket: socket,
-		// })
+		BROKER.publish('ARCADE_INIT_USER', {
+			socket: socket,
+		})
 
 	})
 
