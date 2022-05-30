@@ -1,1 +1,8 @@
 /*body*/
+
+.option{
+    padding: 50px;
+    background: rgba(255, 155, 55, .5);
+    display: inline-block;
+    margin: 10px;
+}

@@ -1,6 +1,6 @@
-import env from './env.js?v=24'
-import fetch_wrap from './fetch_wrap.js?v=24'
-import hal from './hal.js?v=24'
+import env from './env.js?v=25'
+import fetch_wrap from './fetch_wrap.js?v=25'
+import hal from './hal.js?v=25'
 
 import { 
 	Object3D, 
@@ -521,6 +521,11 @@ const generate_content = len => {
 }
 
 
+const pretty_pre = content => {
+	return `<pre>${ JSON.stringify( content, false, 2 ) }</pre>`
+}
+
+
 
 
 export {
@@ -562,4 +567,5 @@ export {
 	trimStrict,
 	over_cap,
 	generate_content,
+	pretty_pre,
 }

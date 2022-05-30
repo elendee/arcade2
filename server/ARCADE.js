@@ -28,7 +28,7 @@ const GAMES = {}
 
 const init_user = async( event ) => {
 	/*
-		init user only, not location aware
+		init user only, not location or game aware
 	*/
 
 	const { socket } = event
@@ -82,9 +82,16 @@ const join_game = async( event ) => {
 
 	try{
 
+		const user = socket.request?.session?.USER
+
 		const game = await touch_game( name )
 
 		await game.add_user( socket )
+
+		socket.send(JSON.stringify({
+			type: 'init_game',
+			state: game.get_start( user ),
+		}))
 
 	}catch( err ){
 		return lib.return_fail_socket( socket, 'server encountered an error joining game', 10 * 1000, err )

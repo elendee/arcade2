@@ -1,15 +1,16 @@
+import ui from './ui.js?v=25'
+import env from './env.js?v=25'
+import hal from './hal.js?v=25'
+import BROKER from './EventBroker.js?v=25'
+import USER from './USER.js?v=25'
+import {
+	pretty_pre,
+} from './lib.js?v=25'
+// import USERS from './registers/USERS.js?v=25'
 
-import ui from './ui.js?v=24'
-import env from './env.js?v=24'
-import hal from './hal.js?v=24'
-import BROKER from './EventBroker.js?v=24'
-import USER from './USER.js?v=24'
-import USERS from './registers/USERS.js?v=24'
 
 
 
-
-let bound = 0
 let packet, SOCKET 
 
 
@@ -31,12 +32,15 @@ const init = () => {
 	SOCKET.onmessage = function( msg ){
 
 		packet = buffer_packet( msg )
+		if( !packet ) return
+
+		// console.log( packet )
 
 		switch( packet.type ){
 
 			case 'init_user':
 				USER.hydrate( packet.user )
-				if( env.LOCAL ) hal('system', `user:<br><pre>${ JSON.stringify( USER, false, 2 ) }</pre>`)
+				if( env.LOCAL ) hal('system', `user:<br>${ pretty_pre( USER ) }`, 10 * 1000 )
 				BROKER.publish('ARCADE_INITIALIZED_USER')
 				break;
 
@@ -46,6 +50,10 @@ const init = () => {
 
 			case 'pong_user':
 				BROKER.publish('PONG_USER', packet )
+				break;
+
+			case 'init_game':
+				BROKER.publish('INIT_GAME', packet )
 				break;
 			
 			// case 'chat':

@@ -1,11 +1,11 @@
-import hal from '../hal.js?v=24'
-import fetch_wrap from '../fetch_wrap.js?v=24'
-import ui from '../ui.js?v=24'
+import hal from '../hal.js?v=25'
+import fetch_wrap from '../fetch_wrap.js?v=25'
+import ui from '../ui.js?v=25'
 // import {
 // 	serialize,
 // 	is_valid_email,
 // 	build_spreadsheet_row,
-// } from '../lib.js?v=24'
+// } from '../lib.js?v=25'
 
 // const form = document.querySelector('#reset-form')
 // const reset = document.querySelector('#reset-pass')

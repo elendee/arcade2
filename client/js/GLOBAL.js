@@ -1,4 +1,4 @@
-import env from './env.js?v=24'
+import env from './env.js?v=25'
 
 const client_data = {
 	BLOOM_LAYER: 1,

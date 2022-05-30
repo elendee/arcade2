@@ -1,5 +1,5 @@
 
-// const cache = '?v=24'
+// const cache = '?v=25'
 const log = require('../server/log.js')
 const lib = require('../server/lib.js')
 const env = require('../server/.env.js')
@@ -43,15 +43,15 @@ const global_data = () => { return `<div id="global-data">${ JSON.stringify( PUB
 const scripts = {
 
 	// auth
-	index: `<script type='module' defer='defer' src='/js/auth/init_index.js?v=24'></script>`,
-	auth: `<script type='module' defer='defer' src='/js/auth/init_auth.js?v=24'></script>`,
-	account: `<script type='module' defer='defer' src='/js/auth/init_account.js?v=24'></script>`,
-	contacts: `<script type='module' defer='defer' src='/js/auth/init_contacts.js?v=24'></script>`,
-	admin: `<script type='module' defer='defer' src='/js/auth/init_admin.js?v=24'></script>`,
-	chirpy: `<script type='module' defer='defer' src='/js/pages/init_chirpy.js?v=24'></script>`,
-	await_confirm: `<script type='module' defer='defer' src='/js/auth/init_await-confirm.js?v=24'></script>`,
-	send_confirm: `<script type='module' defer='defer' src='/js/auth/init_send-confirm.js?v=24'></script>`,
-	redirect: `<script type='module' defer='defer' src='/js/auth/init_redirect.js?v=24'></script>`,
+	index: `<script type='module' defer='defer' src='/js/auth/init_index.js?v=25'></script>`,
+	auth: `<script type='module' defer='defer' src='/js/auth/init_auth.js?v=25'></script>`,
+	account: `<script type='module' defer='defer' src='/js/auth/init_account.js?v=25'></script>`,
+	contacts: `<script type='module' defer='defer' src='/js/auth/init_contacts.js?v=25'></script>`,
+	admin: `<script type='module' defer='defer' src='/js/auth/init_admin.js?v=25'></script>`,
+	chirpy: `<script type='module' defer='defer' src='/js/pages/init_chirpy.js?v=25'></script>`,
+	await_confirm: `<script type='module' defer='defer' src='/js/auth/init_await-confirm.js?v=25'></script>`,
+	send_confirm: `<script type='module' defer='defer' src='/js/auth/init_send-confirm.js?v=25'></script>`,
+	redirect: `<script type='module' defer='defer' src='/js/auth/init_redirect.js?v=25'></script>`,
 
 	// misc
 	fabric: `<script src='/inc/fabric.min.js' defer='defer'></script>`,
@@ -64,18 +64,18 @@ const scripts = {
 const styles = {
 
 	// auth
-	index: `<link rel='stylesheet' href='/css/splash.css?v=24'>`,
-	base: `<link rel='stylesheet' href='/css/base.css?v=24'>`,
-	auth: `<link rel='stylesheet' href='/css/auth.css?v=24'>`,
-	account: `<link rel='stylesheet' href='/css/account.css?v=24'>`,
-	chirpy: `<link rel='stylesheet' href='/css/chirpy.css?v=24'>`,
-	spreadsheets: `<link rel='stylesheet' href='/css/spreadsheets.css?v=24'>`,
-	contacts: `<link rel='stylesheet' href='/css/contacts.css?v=24'>`,
-	admin: `<link rel='stylesheet' href='/css/admin.css?v=24'>`,
-	modal: `<link rel='stylesheet' href='/css/modal.css?v=24'>`,
+	index: `<link rel='stylesheet' href='/css/splash.css?v=25'>`,
+	base: `<link rel='stylesheet' href='/css/base.css?v=25'>`,
+	auth: `<link rel='stylesheet' href='/css/auth.css?v=25'>`,
+	account: `<link rel='stylesheet' href='/css/account.css?v=25'>`,
+	chirpy: `<link rel='stylesheet' href='/css/chirpy.css?v=25'>`,
+	spreadsheets: `<link rel='stylesheet' href='/css/spreadsheets.css?v=25'>`,
+	contacts: `<link rel='stylesheet' href='/css/contacts.css?v=25'>`,
+	admin: `<link rel='stylesheet' href='/css/admin.css?v=25'>`,
+	modal: `<link rel='stylesheet' href='/css/modal.css?v=25'>`,
 
 	// pages
-	page: `<link rel='stylesheet' href='/css/page.css?v=24'>`,
+	page: `<link rel='stylesheet' href='/css/page.css?v=25'>`,
 
 }
 

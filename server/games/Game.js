@@ -24,23 +24,18 @@ class Game {
 
 	}
 
-
-	extend_init(){
-		/*
-			Games must extend this class 
-			then overwrite this function to make _is_valid to be true
-		*/
-
-		this._is_valid = false
-
-	}
+	extend_init(){ /* extend */ this._is_valid = false }
+	
+	get_start(){ /* extend */ return false }
 
 
 	add_user( socket ){
 		const user = socket?.request?.session?.USER
 		if( !user ) return lib.return_fail_socket( socket, 'no user to add to game: ' + this.name, 5000, 'no user given for join')
 
-		if( this._USERS[ user.uuid ]) return lib.return_fail_socket(  socket, 'user is already in game', 5000, 'user attempted 2 joins to: ' + this.name )
+		if( this._USERS[ user.uuid ]){
+			return lib.return_fail_socket(  socket, 'user is already in game', 5000, 'user probably reloaded page.. apply a penalty here' )
+		}
 
 		// touch from global registry
 		let u

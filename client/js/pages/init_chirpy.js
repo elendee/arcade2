@@ -1,20 +1,22 @@
-import WS from '../WS.js?v=24'
-import BROKER from '../EventBroker.js?v=24'
+import WS from '../WS.js?v=25'
+import BROKER from '../EventBroker.js?v=25'
+import {
+	pretty_pre,
+} from '../lib.js?v=25'
+import User from '../classes/User.js?v=25'
+import USER from '../USER.js?v=25'
+import USERS from '../registers/USERS.js?v=25'
 
-import User from '../classes/User.js?v=24'
-import USER from '../USER.js?v=24'
-import USERS from '../registers/USERS.js?v=24'
 
 
 
-
-
+const content = document.querySelector('#content')
 
 
 
 // handlers
 
-const init_game = event => {
+const got_user = event => {
 	BROKER.publish('SOCKET_SEND', {
 		type: 'join_game',
 		name: 'chirpy',
@@ -41,6 +43,36 @@ const handle_user = event => {
 
 }
 
+const init_game = event => {
+	const { state } = event
+
+	hal('standard', `init ${ state.name }<br>${ pretty_pre( state ) }`, 5000 )
+
+	show_lobby()
+
+}
+
+
+const show_lobby = () => {
+
+	const join = document.createElement('div')
+	join.classList.add('option', 'button')
+	join.innerHTML = 'join a board'
+	join.addEventListener('click', () => {
+		hal('error', 'in development', 5 * 1000 )
+	})
+
+	const create = document.createElement('div')
+	create.classList.add('option', 'button')
+	create.innerHTML = 'create a board'
+	create.addEventListener('click', () => {
+		hal('error', 'in development', 5 * 1000 )
+	})
+
+	content.appendChild( join )
+	content.appendChild( create )
+
+}
 
 
 
@@ -51,5 +83,6 @@ const socket = window.SOCKET = WS.init()
 
 
 
-BROKER.subscribe('ARCADE_INITIALIZED_USER', init_game )
+BROKER.subscribe('ARCADE_INITIALIZED_USER', got_user )
 BROKER.subscribe('PONG_USER', handle_user )
+BROKER.subscribe('INIT_GAME', init_game )
