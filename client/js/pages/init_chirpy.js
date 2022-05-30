@@ -17,6 +17,7 @@ const content = document.querySelector('#content')
 // handlers
 
 const got_user = event => {
+	console.log('got user, requesting chirpy')
 	BROKER.publish('SOCKET_SEND', {
 		type: 'join_game',
 		name: 'chirpy',
@@ -30,6 +31,8 @@ const handle_user = event => {
 		---use uuid--- to cross reference and access USER[ _private data ] when needed
 	*/
 	const { user } = event
+
+	console.log('got user')
 
 	if( USERS[ user.uuid ]){ // redundant sends
 
@@ -46,6 +49,8 @@ const handle_user = event => {
 const init_game = event => {
 	const { state } = event
 
+	console.log('initializing game')
+
 	hal('standard', `init ${ state.name }<br>${ pretty_pre( state ) }`, 5000 )
 
 	show_lobby()
@@ -54,6 +59,8 @@ const init_game = event => {
 
 
 const show_lobby = () => {
+
+	console.log('showing lobby')
 
 	const join = document.createElement('div')
 	join.classList.add('option', 'button')
