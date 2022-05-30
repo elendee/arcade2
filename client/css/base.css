@@ -251,6 +251,7 @@ img#flash{
 .alert-msg pre{
 	max-height: 80vh;
     overflow-y: auto;
+	text-align: left;
 }
 .alert-msg span{
 	color: orange

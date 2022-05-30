@@ -46,7 +46,7 @@ const init = () => {
 
 		}
 
-		if( 0 && env.LOCAL && !env.LOG_WS_RECEIVE_EXCLUDES.includes( packet.type ) ){
+		if( 1 && env.LOCAL && !env.LOG_WS_RECEIVE_EXCLUDES.includes( packet.type ) ){
 			console.log( packet )
 		}
 
@@ -54,45 +54,14 @@ const init = () => {
 
 			case 'init_user':
 				// console.log( packet )
-				for( const key in packet.user ) USER[ key ] = packet.user[ key ]
+				USER.hydrate( packet.user )
+				if( env.LOCAL ) hal('system', `user:<br><pre>${ JSON.stringify( USER, false, 2 ) }</pre>`)
 				break;
 
 			case 'pong':
 				BROKER.publish('PONG')
 				break;
 			
-			case 'board_users':
-				BROKER.publish('BOARD_USERS', packet )
-				break;
-
-			case 'pong_user':
-				BROKER.publish('BOARD_PONG_USER', packet )
-				break;
-
-			case 'pong_board':
-				BROKER.publish('BOARD_PONG_BOARD', packet )
-				break;
-
-			case 'pong_options':
-				BROKER.publish('BOARD_OPTIONS', packet )
-				break;
-
-			case 'reflect_options':
-				BROKER.publish('BOARD_REFLECT', packet )
-				break;
-
-			case 'board_touch':
-				BROKER.publish('BOARD_TOUCH', packet )
-				break;
-
-			case 'pong_anchor':
-				BROKER.publish('BOARD_PONG_ANCHOR', packet )
-				break;
-
-			case 'remove_user':
-				BROKER.publish('BOARD_REMOVE_USER', packet )
-				break;
-
 			// case 'chat':
 			// 	BROKER.publish('ROOM_HANDLE_CHAT', packet )
 			// 	break;
