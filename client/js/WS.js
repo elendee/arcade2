@@ -141,7 +141,7 @@ const buffer_packet = msg => {
 
 	}
 
-	if( 1 && env.LOCAL && !env.LOG_WS_RECEIVE_EXCLUDES.includes( packet.type ) ){
+	if( !env.LOG_WS_RECEIVE_EXCLUDES.includes( packet.type ) ){
 		console.log( packet )
 	}
 
