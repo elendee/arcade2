@@ -345,7 +345,7 @@ DB.initPool(( err, pool ) => {
 
 	server.on('upgrade', function( request, socket, head ){
 
-		log('flag', '****** UPGRADE ********')
+		// log('flag', '****** UPGRADE ********')
 		redis_session( request, {}, () => {
 
 			// log('wss', 'redis session parsed')
