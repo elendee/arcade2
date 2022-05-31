@@ -58,6 +58,10 @@ const pop_option = type => {
 			})
 			select.classList.add('chr-selection')
 			modal.content.appendChild( select )
+			const size = build_input('select', 'board size', 'size', null, {
+				options: [10, 20, 30],
+			})
+			modal.content.appendChild( size )
 			break;
 
 		case 'join':
