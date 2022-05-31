@@ -61,10 +61,18 @@ const bind_user = async( socket ) => { // , CHAT
 					})
 					break;
 
-				case 'chr_ping_boards':
+				case 'chr_ping_boards': // for listings
 					BROKER.publish('CHR_PONG_BOARDS', {
 						socket: socket,
 						packet: packet,
+					})
+					break;
+
+				case 'chr_ping_board': // in game
+					BROKER.publish('CHR_PONG_BOARD', {
+						socket: socket,
+						packet: packet,
+						// user: USER,
 					})
 					break;
 
@@ -76,13 +84,6 @@ const bind_user = async( socket ) => { // , CHAT
 					})
 					break;
 
-				case 'chr_ping_board':
-					BROKER.publish('CHR_PONG_BOARD', {
-						socket: socket,
-						packet: packet,
-						// user: USER,
-					})
-					break;
 
 				// case 'chat':
 				// 	CHAT.handle_chat( socket, packet, USER )

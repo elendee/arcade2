@@ -1,3 +1,4 @@
+const log = require('../log.js')
 const Game = require('./Game.js')
 const PUBLIC = require('../data/PUBLIC.js')
 const {
@@ -63,7 +64,8 @@ class Board {
 		this.size = init.size
 		this.uuid = init.uuid || arc_uuid()
 		this.founder_uuid = init.founder_uuid
-		this._manager = init._manager // parent Chirpy
+		this._is_create = init.is_create || init._is_create
+		// this._manager = init._manager // parent Chirpy
 
 		this._TILES = []
 		this._USERS = {}
@@ -71,6 +73,11 @@ class Board {
 		this.init_tiles()
 
 		add_publish( this )
+
+		setTimeout(() => {
+			this._is_create = false
+		}, 10 * 1000 )
+
 	}
 
 	init_tiles(){
@@ -89,11 +96,12 @@ class Board {
 		}
 	}
 
-	add_user( user ){
+	add_user( user, manager ){ // Board
 		/*
 			main add user
 		*/
 		this._USERS[ user.uuid ] = user
+		manager._USERS[ user.uuid ] = user
 		// this._manager.broadcast({
 		this.broadcast({
 			type: 'chr_pong_user',
@@ -101,7 +109,15 @@ class Board {
 		})
 	}
 
-	broadcast( packet ){
+	remove_user( uuid ){
+		delete this._USERS[ uuid ]
+		this.broadcast({
+			type: 'chr_remove_user',
+			uuid: uuid,
+		})
+	}
+
+	broadcast( packet ){ // Board
 		for( const uuid in this._USERS ){
 			if( !SOCKETS[ uuid ] ){
 				log('flag', 'missing socket for user : ' + uuid )
@@ -148,8 +164,30 @@ class Board {
 		}))
 	}
 
-	pong_player_state( socket ){
+	check_active( manager ){
+		const keys = Object.keys( this._USERS )
+		if( !keys.length ){
+			if( this._is_create ){
+				log('flag', 'skipping board close for opening time')
+			}else{
+				this.close( this )
+			}
+		}
+		log('Board', 'board users: ', keys.length )
+	}
 
+	// pong_player_state( socket ){
+
+	// }
+
+	close( manager ){
+		for( const uuid in this._USERS ){
+			this.remove_user( uuid )
+		}
+		clearInterval( this._clock )
+		delete this._clock
+		delete manager._BOARDS[ this.uuid ]
+		log('status', 'board close: ', this.name )
 	}
 
 
@@ -182,20 +220,30 @@ class Chirpy extends Game {
 		this._is_valid = true // ( deafult bool for all Game extends )
 	}
 
-	async init_board( choice, user ){
-		const keys = PUBLIC.CHR_BOARD_TYPES.map( ele => { return ele.name })
-		if( !keys.includes( choice )) throw new Error('invalid board choice', choice )
+	async init_board( type, size, user, is_create ){
 
-		const board = new Board({
-			type: choice,
-			size: 15,
+		const keys = PUBLIC.CHR_BOARD_TYPES.map( ele => { return ele.name })
+		if( !keys.includes( type )) throw new Error('invalid board type' )
+
+		const n = Number( size )
+
+		if( typeof n !== 'number' && IsNaN( n ) ) throw new Error('invalid board size')
+
+		const init = {
+			type: type,
+			size: n,
 			founder_uuid: user.uuid,
-			_manager: this,
-		})
+			is_create: is_create, // whether to hold board open through page reload or not
+			// _manager: this,
+		}
+
+		log('Chirpy', 'new board: ', init )
+
+		const board = new Board( init )
 
 		this._BOARDS[ board.uuid ] = board
 
-		board.add_user( user )
+		board.add_user( user, this )
 
 		return board
 
@@ -233,6 +281,24 @@ class Chirpy extends Game {
 			game: this.name,
 			user_uuid: uuid,
 		})
+	}
+
+
+	check_active( GAMES ){
+		let b 
+		const bkeys = Object.keys( this._BOARDS )
+		for( const uuid in this._BOARDS ){
+			b = this._BOARDS[ uuid ]
+			b.check_active( this )
+		}
+
+		const keys = Object.keys( this._USERS )
+		if( !keys.length ){
+			this.close( GAMES ) // ( in Game class )
+		}
+
+		log('Chirpy', 'boards active: ', bkeys.length )			
+		log('Chirpy', 'users active: ', keys.length )			
 	}
 
 }

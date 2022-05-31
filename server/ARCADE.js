@@ -147,17 +147,19 @@ const chr_init_board = async( event ) => {
 	const { socket, packet, user } = event
 
 	try {
-		const { subtype, choice } = packet
+		const { subtype, values, create } = packet
 
 		let board
 
 		switch( subtype ){
 
 			case 'join':
+				board = GAMES.chirpy._BOARDS[ values.uuid ]
+				if( !board ) return lib.return_fail_socket( socket, 'board not found', 5000, 'no board join: ' + values.uuid )
 				break;
 
 			case 'create':
-				board = await GAMES.chirpy.init_board( choice, user )
+				board = await GAMES.chirpy.init_board( values.type, values.size, user, create )
 				break;
 
 			default:
@@ -174,7 +176,8 @@ const chr_init_board = async( event ) => {
 		socket.send( JSON.stringify( p ))
 
 	}catch( err ){
-		return lib.return_fail_socket(socket, 'error initializing game', 5000, err )
+		const msg = typeof err.message === 'string' && err.message.match(/invalid .*/i) ? err.message : 'error initializing game'
+		return lib.return_fail_socket(socket, msg, 10 * 1000, err )
 	}
 
 }
@@ -204,7 +207,7 @@ const chr_pong_board = async( event ) => {
 		log('flag', 'spoofing non-production board')
 
 		GAMES.chirpy = await touch_game('chirpy')
-		board = await GAMES.chirpy.init_board('desert', user )
+		board = await GAMES.chirpy.init_board('desert', 5, user, false )
 		board.pong_board_state( socket )
 
 	}
@@ -216,12 +219,26 @@ const disconnect_user = event => {
 	const user = socket?.request?.session?.USER
 	if( !user ) return lib.return_fail( 'no user for socket disconnect_user', false )
 
-	delete SOCKETS[ user.uuid ]
-	delete USERS[ user.uuid ]
+	log('ARCADE', 'user logout: init ', user.handle )
 
-	for( const name in GAMES ){
-		GAMES[ name ].remove_user( user.uuid )
-	}
+	const uuid = user.uuid
+
+	delete SOCKETS[ uuid ]
+	delete USERS[ uuid ]
+
+	setTimeout(() => {
+		for( const name in GAMES ){
+			GAMES[ name ].remove_user( user.uuid )
+		}
+		let msg = 'user logout: '
+		if( !USERS[ uuid ] && !SOCKETS[ uuid ] ){
+			GAMES[ name ].check_active( GAMES )
+			msg += 'complete'
+		}else{ // most likely a page reload or game load
+			msg += 'skipping'
+		}
+		log('ARCADE', msg, user.handle )
+	}, 3000 )
 }
 
 

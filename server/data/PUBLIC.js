@@ -37,6 +37,21 @@ module.exports = {
 		name: 'desert',
 		label: 'desert',
 		value: 'desert',
+	}],
+
+	CHR_BOARD_SIZES: [{
+		name: 'small',
+		label: 'small',
+		value: 10,
+	},
+	{
+		name: 'medium',
+		label: 'medium',
+		value: 20,
+	},{
+		name: 'large',
+		label: 'large',
+		value: 30,
 	}]
 
 }

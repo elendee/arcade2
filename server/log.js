@@ -27,6 +27,12 @@ const log = function( type, msg, ...data ){
 			c++
 			if( t == type ){
 				color = colors_fg[ c % colors_fg.length ]
+				// console.log('\n' + c + ' ' + type + '\n') // < --- very convenient 
+				if( type !== 'flag' && ( c === 2 || c === 11 ) ){
+					c++
+					color = colors_fg[ c % colors_fg.length ]
+				}
+				break;
 			}
 		}
 		if( type == 'flag' ) pre = '!!! '

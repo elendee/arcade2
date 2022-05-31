@@ -1,3 +1,4 @@
+const env = require('../.env.js')
 const log = require('../log.js')
 const lib = require('../lib.js')
 const SOCKETS = require('../registers/SOCKETS.js')
@@ -31,8 +32,10 @@ class Game {
 	get_start(){ return fail_extend( this ) }
 	get_listing(){ return fail_extend( this ) }
 	remove_user(){ return fail_extend( this ) }
+	check_active(){ return fail_extend( this ) }
 
-	add_user( socket ){
+	add_user( socket ){ // Game
+
 		const user = socket?.request?.session?.USER
 		if( !user ) return lib.return_fail_socket( socket, 'no user to add to game: ' + this.name, 5000, 'no user given for join')
 
@@ -60,7 +63,8 @@ class Game {
 	}
 
 
-	broadcast( packet ){
+	broadcast( packet ){ // Game
+		
 		for( const uuid in this._USERS ){
 			if( !SOCKETS[ uuid ] ){
 				log('flag', 'missing socket for user : ' + uuid )
@@ -72,13 +76,13 @@ class Game {
 
 	bring_online( GAMES ){
 
+		log('Game', 'bring online: ' + this.name )
+
 		// pulse
 		if( !this._pulse ){
 			this._pulse = setInterval(() => {
-				if( !Object.keys( this._USERS )){
-					this.close( GAMES )
-				}
-			}, 5000 )
+				this.check_active( GAMES )
+			}, ( env.PRODUCTION ? 10 : 5000 ) * 1000 )
 		}
 
 		// registry
@@ -87,7 +91,7 @@ class Game {
 	}
 
 	close( GAMES ){
-		log('flag', 'closing: ' + this.name )
+		log('Game', 'closing: ' + this.name )
 		clearInterval( this._pulse)
 		delete this._pulse
 		delete GAMES[ this.name ]

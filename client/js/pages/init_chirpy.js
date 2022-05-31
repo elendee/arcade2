@@ -59,7 +59,7 @@ const pop_option = type => {
 			select.classList.add('chr-selection')
 			modal.content.appendChild( select )
 			const size = build_input('select', 'board size', 'size', null, {
-				options: [10, 20, 30],
+				options: GLOBAL.CHR_BOARD_SIZES,
 			})
 			modal.content.appendChild( size )
 			break;
@@ -83,16 +83,27 @@ const pop_option = type => {
 	submit.classList.add('button')
 	submit.innerText = 'ok'
 	submit.addEventListener('click', () => {
-		const choice = document.querySelector('.modal.join .chr-selection select')?.value || document.querySelector('.modal.create .chr-selection select')?.value
-		if( !choice ){
-			hal('error', 'nothing selected', 5000 )
-			return
+
+		const values = {}
+
+		const modal = document.querySelector('.modal')
+		if( type === 'join' ){
+			values.uuid = modal.querySelector('select[name=board_join]')?.value
+		}else if( type === 'create' ){
+			values.type = modal.querySelector('select[name=type]')?.value
+			values.size = modal.querySelector('select[name=size]')?.value
 		}
+
 		ui.spinner.show()
+		setTimeout(() => {
+			ui.spinner.hide() // ( lots of fail conditions will leave this hanging )
+		}, 3000 )
+
 		BROKER.publish('SOCKET_SEND', {
 			type: 'chr_init_board',
 			subtype: type,
-			choice: choice,
+			values: values,
+			create: type === 'create',
 		})
 	})
 	modal.content.appendChild( submit )

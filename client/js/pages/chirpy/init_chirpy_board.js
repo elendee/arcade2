@@ -28,7 +28,7 @@ const init_user = event => {
 	SCENE.add( CAMERA )
 	SCENE.add( LIGHT.hemispherical )
 
-	CAMERA.position.set(50, 130, 50)
+	CAMERA.position.set(50, 250, 50)
 	CAMERA.lookAt( new Vector3(0,0,0) )
 
 	init_animate()
