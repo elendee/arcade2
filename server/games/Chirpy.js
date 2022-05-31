@@ -94,10 +94,21 @@ class Board {
 			main add user
 		*/
 		this._USERS[ user.uuid ] = user
-		this._manager.broadcast({
-			type: 'chr_add_user',
+		// this._manager.broadcast({
+		this.broadcast({
+			type: 'chr_pong_user',
 			user: user.publish(),
 		})
+	}
+
+	broadcast( packet ){
+		for( const uuid in this._USERS ){
+			if( !SOCKETS[ uuid ] ){
+				log('flag', 'missing socket for user : ' + uuid )
+				continue
+			}
+			SOCKETS[ uuid ].send(JSON.stringify( packet ))
+		}
 	}
 
 	get_listing(){
@@ -177,7 +188,7 @@ class Chirpy extends Game {
 
 		const board = new Board({
 			type: choice,
-			size: 10,
+			size: 15,
 			founder_uuid: user.uuid,
 			_manager: this,
 		})

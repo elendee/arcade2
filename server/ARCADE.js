@@ -173,8 +173,6 @@ const chr_init_board = async( event ) => {
 
 		socket.send( JSON.stringify( p ))
 
-		// GAMES.chirpy.broadcast()
-
 	}catch( err ){
 		return lib.return_fail_socket(socket, 'error initializing game', 5000, err )
 	}

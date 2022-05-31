@@ -13,8 +13,7 @@ import {
 } from '/three-patch/build/three.module.js'
 
 import BOARD from './BOARD.js?v=30'
-
-
+import chirpy_ui from './chirpy_ui.js?v=30'
 
 // const chirpy_board = board => {
 // 	console.log( 'chirpy_board: ', board )
@@ -29,7 +28,7 @@ const init_user = event => {
 	SCENE.add( CAMERA )
 	SCENE.add( LIGHT.hemispherical )
 
-	CAMERA.position.set(50, 100, 50)
+	CAMERA.position.set(50, 130, 50)
 	CAMERA.lookAt( new Vector3(0,0,0) )
 
 	init_animate()

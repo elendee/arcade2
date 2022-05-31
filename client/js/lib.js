@@ -571,9 +571,13 @@ const build_input = ( type, label, name, placeholder, data ) => {
 }
 
 
-const create = ( type, ...classes ) => {
+const create = ( type, is_id, ...classes ) => {
 	const ele = document.createElement( type )
-	for( const c of classes ) ele.classList.add( classes )
+	if( is_id ){
+		if( classes[0]) ele.id = classes[0]
+	}else{
+		for( const c of classes ) ele.classList.add( classes )
+	}
 	return ele
 }
 

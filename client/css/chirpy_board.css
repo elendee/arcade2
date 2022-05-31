@@ -1,1 +1,30 @@
-/*adsf*/
+#p1ready,
+#p2ready{
+    position: fixed;
+    left: 
+}
+
+#player-status{
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100px;
+    min-height: 100px;
+    background: white;
+    border: 3px solid;
+    padding: 10px;
+}
+
+#p1ready{
+    position: fixed;
+    left: 48%;
+    bottom: 0px;
+    padding: 20px 30px;
+    font-size: 1.5rem;
+}
+
+.player{
+    border: 2px solid grey;
+    padding: 5px;
+    margin: 5px 0;
+}

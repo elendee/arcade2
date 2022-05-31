@@ -70,6 +70,10 @@ const init = () => {
 				BROKER.publish('CHR_PONG_BOARD', packet )
 				break;
 
+			case 'chr_pong_user':
+				BROKER.publish('CHR_PONG_USER', packet )
+				break;
+
 			case 'remove_user':
 				BROKER.publish('ARCADE_REMOVE_USER', packet )
 				break;

@@ -62,7 +62,7 @@ const pop_option = type => {
 
 		case 'join':
 			// join gets its values async, also gets the 'chr-selection' class added to select
-			const area = create('div', 'selection-area')
+			const area = create('div', false, 'selection-area')
 			modal.content.appendChild( area )
 			BROKER.publish('SOCKET_SEND', {
 				type: 'chr_ping_boards',
